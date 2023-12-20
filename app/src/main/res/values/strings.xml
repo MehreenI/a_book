@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">book</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="coin_heading">Your Coin</string>
+    <string name="coin">0</string>
+    <string name="user_icon">user Icon</string>
+    <string name="getCoin">Tap to Get More Coin</string>
+    <string name="all">All</string>
+    <string name="academic">Academic</string>
+    <string name="general">General</string>
+    <string name="book_image">Book Image</string>
+    <string name="bookname">Book Name</string>
+    <string name="favourite_img">Favourite</string>
+    <string name="location_icon">Location</string>
+    <string name="city">Karachi</string>
+    <string name="price">price</string>
+    <string name="date">Date</string>
+</resources>

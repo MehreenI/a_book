@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@color/white"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginVertical="3dp"
+        android:layout_marginStart="5dp"
+        android:contentDescription="@string/book_image"
+        app:srcCompat="@drawable/add_24"
+        tools:srcCompat="@drawable/add_24" />
+
+    <TextView
+        android:id="@+id/bookname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/favorite"
+        android:layout_toEndOf="@+id/imageView"
+        android:maxLines="2"
+        android:text="@string/bookname"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:srcCompat="@drawable/star_outline_24"
+        android:contentDescription="@string/favourite_img" />
+
+    <ImageView
+        android:id="@+id/iconlocation"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/bookname"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:scaleType="fitCenter"
+        android:src="@drawable/location_on_24"
+        android:contentDescription="@string/location_icon" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iconlocation"
+        android:layout_alignStart="@+id/iconlocation"
+        android:layout_alignEnd="@+id/bookname"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="-22dp"
+        android:layout_marginEnd="-23dp"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:text="@string/city"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookname"
+        android:layout_alignStart="@+id/bookname"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="34dp"
+        android:maxLines="1"
+        android:text="@string/price"
+        android:textColor="@color/theme"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/price"
+        android:layout_alignStart="@+id/bookname"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:text="@string/date"
+        android:textSize="14sp" />
+</RelativeLayout>

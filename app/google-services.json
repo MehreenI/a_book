@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "903925693197",
+    "firebase_url": "https://bookmart-bb77b-default-rtdb.firebaseio.com",
+    "project_id": "bookmart-bb77b",
+    "storage_bucket": "bookmart-bb77b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903925693197:android:7c7003d454cd579a2ace44",
+        "android_client_info": {
+          "package_name": "com.example.book"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4B5Jh3wgDVjRuKLE4twxfAkt28ltU5iI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903925693197:android:4017937981a359152ace44",
+        "android_client_info": {
+          "package_name": "com.example.bookmart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4B5Jh3wgDVjRuKLE4twxfAkt28ltU5iI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903925693197:android:4be966e1805ffc072ace44",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4B5Jh3wgDVjRuKLE4twxfAkt28ltU5iI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

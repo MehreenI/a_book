@@ -1,7 +1,9 @@
 package com.example.book.ui.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.book.AppController;
 import com.example.book.R;
-import com.example.book.databinding.FragmentDashboardBinding;
-import com.example.book.ui.Adapter.BookAdapter;
 import com.example.book.databinding.FragmentHomeBinding;
+import com.example.book.manager.CoinManager;
+import com.example.book.ui.Adapter.BookAdapter;
+import com.example.customAdsPackage.GoogleAdMobManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,9 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    private Activity activity;
+    private final String TAG = "HomeFragment";
+    private Runnable addCoinsCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,25 +57,65 @@ public class HomeFragment extends Fragment {
             // Update RecyclerView adapter with the new data
             bookAdapter.setData(posts);
         });
+
         binding.button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getActivity(), "Academic Button is Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), AcademicBook.class);
                 startActivity(intent);
             }
         });
+
         binding.button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getActivity(), "Academic Button is Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), GeneralBook.class);
                 startActivity(intent);
             }
         });
+
+        GoogleAdMobManager.getInstance().Initialize(getActivity());
+
+        binding.getCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "btnShowRewardAd clicked");
+                // check if ad is available
+                if (GoogleAdMobManager.getInstance().IsRewardedAdAvailable()) {
+                    // Show the rewarded ad
+                    GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), addCoinsCallback);
+                } else {
+                    Log.d(TAG, "The rewarded ad isn't ready yet.");
+                }
+            }
+        });
+
+        addCoinsCallback = new Runnable() {
+            @Override
+            public void run() {
+                int coinsToAdd = 10;
+                String userId = "dummyuser";
+                CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+
+                // Add coins to Firebase
+                coinManager.addCoinsToFirebase(userId, coinsToAdd);
+                updateCoinTextView();
+
+                // Display a toast or perform any other actions
+                Log.d(TAG, "give addCoins(" + coinsToAdd + ")");
+                Toast.makeText(getActivity(), "Reward Given: +" + coinsToAdd + " coins", Toast.LENGTH_SHORT).show();
+            }
+        };
+
         return root;
     }
 
+    private void updateCoinTextView() {
+        CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+        int currentCoins = coinManager.getTotalCoins();
 
-
+        // Update the TextView with the current coin count
+        // Assuming you have a TextView named coinTextView in your layout
+        binding.coin.setText(String.valueOf(currentCoins));
+    }
 }

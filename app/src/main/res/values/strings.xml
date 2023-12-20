@@ -18,4 +18,6 @@
     <string name="price">price</string>
     <string name="date">Date</string>
     <string name="academic_books">ACADEMIC BOOKS</string>
+    <string name="general_books">GENERAL BOOKS</string>
+    <string name="icon">Icon</string>
 </resources>

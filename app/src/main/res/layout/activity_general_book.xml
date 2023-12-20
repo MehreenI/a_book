@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/academic_books"
+        android:text="@string/general_books"
         android:textColor="@color/app_theme_color"
         android:textSize="24sp"
         android:textStyle="bold|italic"
@@ -27,7 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:srcCompat="@drawable/icon_school" />
+        app:srcCompat="@drawable/icon_school"
+        android:contentDescription="@string/icon" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

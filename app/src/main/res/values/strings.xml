@@ -20,4 +20,37 @@
     <string name="academic_books">ACADEMIC BOOKS</string>
     <string name="general_books">GENERAL BOOKS</string>
     <string name="icon">Icon</string>
+    <string name="logo">Logo</string>
+    <string name="bookmart">BOOKMART</string>
+    <string name="let_s_sign_you_in_n_you_ve_been_missed">Let\'s Sign You In\nYou\'ve been missed!</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="forgot_password">forgot password</string>
+    <string name="log_in">Log In</string>
+    <string name="or">or</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="don_t_have_an_account">Don’t have an Account?</string>
+    <string name="create_account">Create Account</string>
+    <string name="welcome_to_bookmart">WELCOME TO BOOKMART</string>
+    <string name="skip">Skip for now</string>
+    <string name="alreay_on_bookmart">Alreay on Bookmart?</string>
+    <string name="name">Name:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="confirm_password">Confirm Password:</string>
+    <string name="create_Account">Create Account</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="select_image">Select Image</string>
+    <string name="add_more_images">Add More Images</string>
+    <string name="choose_book_condition">Choose Book Condition</string>
+    <string name="set_price">price</string>
+    <string name="Add_Post">Add Post</string>
+    <string name="Add_fea_Post">Add Feature Post</string>
+    <string name="sell">Sell</string>
+
+    <string-array name="book_category">
+        <item>Select Category</item>
+        <item>Academic</item>
+        <item>General</item>
+    </string-array>
+
 </resources>

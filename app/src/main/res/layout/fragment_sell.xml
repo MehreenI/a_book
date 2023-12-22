@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.sellbook.SellFragment">
+
+    <!-- Add a space between top_bar and the ScrollView -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <!-- ScrollView for text content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+
+            <Spinner
+                android:id="@+id/category_book"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/spinner_background"
+                android:padding="10dp"
+                android:paddingEnd="40dp" />
+            <View
+                android:id="@+id/viewseparator1"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+
+            <!-- TextView Heading -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_image"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/theme"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp" />
+
+            <!-- Use a horizontal LinearLayout to position the ImageButton and ImageView -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="16dp">
+
+                <!-- ImageButton for Image Selection -->
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@color/gray"
+                    android:contentDescription="@string/select_image"
+                    android:src="@android:drawable/ic_input_add" />
+
+                <!-- ImageView for selected image (initially invisible) -->
+                <ImageView
+                    android:id="@+id/selectedImageView"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:visibility="gone"
+                    android:contentDescription="@string/book_image" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/addMoreImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:drawableEnd="@android:drawable/ic_input_add"
+                android:drawableTint="@color/theme"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/add_more_images"
+                android:textColor="@color/theme"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/viewseparator2"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+
+
+            <!-- Text View Heading -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:text="@string/choose_book_condition"
+                android:textColor="@color/theme"
+                android:textSize="20sp" />
+
+            <!-- Radio Group for "New" and "Used" Options -->
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <!-- Radio Button for "New" Option -->
+                <RadioButton
+                    android:id="@+id/radioButtonNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:paddingEnd="20dp"
+                    android:text="New"
+                    android:textColor="@color/black" />
+
+                <!-- Radio Button for "Used" Option -->
+                <RadioButton
+                    android:id="@+id/radioButtonUsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Used"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/text_hint" />
+            </RadioGroup>
+
+            <View
+                android:id="@+id/viewseparator3"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="3dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:padding="10dp"
+                    android:text="@string/set_price"
+                    android:textColor="@color/theme"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/price"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corner"
+                    android:backgroundTint="@color/background_sale"
+                    android:hint="Rs. 1000/-"
+                    android:padding="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="120dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/text_hint"
+                    android:textColorHint="@color/text_hint" />
+            </LinearLayout>
+
+
+
+            <View
+                android:id="@+id/viewseparator4"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+
+            <EditText
+                android:id="@+id/bookNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/background_sale"
+                android:hint="Book Name"
+                android:padding="15dp"
+                android:paddingStart="20dp"
+                android:paddingTop="120dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/text_hint"
+                android:textColorHint="@color/text_hint" />
+
+            <EditText
+                android:id="@+id/bookAuthorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/background_sale"
+                android:hint="Author"
+                android:padding="15dp"
+                android:paddingStart="20dp"
+                android:paddingTop="120dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/text_hint"
+                android:textColorHint="@color/text_hint" />
+
+            <EditText
+                android:id="@+id/DescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_corner"
+                android:backgroundTint="@color/background_sale"
+                android:hint="Book Description"
+                android:padding="15dp"
+                android:paddingStart="20dp"
+                android:paddingTop="120dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/text_hint"
+                android:textColorHint="@color/text_hint" />
+
+            <Button
+                android:id="@+id/uploadData"
+                android:layout_width="286dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_round_corner"
+                android:backgroundTint="@color/theme"
+                android:padding="15dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/Add_Post"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/featurePost"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_round_corner"
+                android:backgroundTint="@color/feature_post"
+                android:padding="15dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/Add_fea_Post"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</FrameLayout>
+

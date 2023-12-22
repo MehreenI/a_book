@@ -1,5 +1,6 @@
 package com.example.book.ui.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.book.databinding.FragmentDashboardBinding;
+import com.example.book.ui.signin.loginActivity;
+import com.example.book.ui.sinup.SignUpActivity;
 
 public class DashboardFragment extends Fragment {
 
@@ -26,6 +29,20 @@ public class DashboardFragment extends Fragment {
 
         final TextView textView = binding.textDashboard;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), loginActivity.class);
+                startActivity(intent);
+            }
+        });
+        binding.regBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
         return root;
     }
 

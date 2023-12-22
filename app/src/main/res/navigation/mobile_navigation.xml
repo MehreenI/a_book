@@ -22,4 +22,10 @@
         android:name="com.example.book.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_sell"
+        android:name="com.example.book.ui.sellbook.SellFragment"
+        android:label="Sell Book"
+        tools:layout="@layout/fragment_sell" />
 </navigation>

@@ -1,0 +1,18 @@
+<!-- res/drawable/spinner_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background layer with rounded corners -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/background_sale" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <!-- Inset for adding padding to the arrow icon -->
+    <item android:right="16dp" android:left="16dp">
+        <layer-list>
+            <!-- Arrow icon layer -->
+            <item android:drawable="@drawable/ic_arrow" android:gravity="end" />
+        </layer-list>
+    </item>
+</layer-list>

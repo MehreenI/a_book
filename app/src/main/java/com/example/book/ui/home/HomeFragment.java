@@ -22,6 +22,13 @@ import com.example.book.databinding.FragmentHomeBinding;
 import com.example.book.manager.CoinManager;
 import com.example.book.ui.Adapter.BookAdapter;
 import com.example.customAdsPackage.GoogleAdMobManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -58,64 +65,86 @@ public class HomeFragment extends Fragment {
             bookAdapter.setData(posts);
         });
 
-        binding.button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AcademicBook.class);
-                startActivity(intent);
-            }
+        binding.button5.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AcademicBook.class);
+            startActivity(intent);
         });
 
-        binding.button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GeneralBook.class);
-                startActivity(intent);
-            }
+        binding.button6.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), GeneralBook.class);
+            startActivity(intent);
         });
 
         GoogleAdMobManager.getInstance().Initialize(getActivity());
 
-        binding.getCoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "btnShowRewardAd clicked");
-                // check if ad is available
-                if (GoogleAdMobManager.getInstance().IsRewardedAdAvailable()) {
-                    // Show the rewarded ad
-                    GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), addCoinsCallback);
-                } else {
-                    Log.d(TAG, "The rewarded ad isn't ready yet.");
-                }
+        binding.getCoin.setOnClickListener(view -> {
+            Log.d(TAG, "btnShowRewardAd clicked");
+
+            if (GoogleAdMobManager.getInstance().IsRewardedAdAvailable()) {
+                // Show the rewarded ad
+                GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), addCoinsCallback);
+            } else {
+                Log.d(TAG, "The rewarded ad isn't ready yet.");
             }
         });
 
-        addCoinsCallback = new Runnable() {
-            @Override
-            public void run() {
-                int coinsToAdd = 10;
-                String userId = "dummyuser";
+        addCoinsCallback = () -> {
+            // Increment coins in Firebase
+            int coinsToAdd = 10; // or any other amount you want to reward
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                String userId = currentUser.getUid();
+
                 CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
 
                 // Add coins to Firebase
                 coinManager.addCoinsToFirebase(userId, coinsToAdd);
-                updateCoinTextView();
+
+                // Update the UI or perform any other actions
+                updateCoinTextView(userId);
 
                 // Display a toast or perform any other actions
-                Log.d(TAG, "give addCoins(" + coinsToAdd + ")");
+                Log.d(TAG, "Added " + coinsToAdd + " coins to user: " + userId);
                 Toast.makeText(getActivity(), "Reward Given: +" + coinsToAdd + " coins", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.e(TAG, "User is not logged in");
+                // Handle the case where the user is not logged in
             }
         };
+
+        // Fetch and display user's coin information
+        fetchUserCoinsAndDisplay();
 
         return root;
     }
 
-    private void updateCoinTextView() {
-        CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
-        int currentCoins = coinManager.getTotalCoins();
+    private void fetchUserCoinsAndDisplay() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            updateCoinTextView(userId);
+        }
+    }
 
-        // Update the TextView with the current coin count
-        // Assuming you have a TextView named coinTextView in your layout
-        binding.coin.setText(String.valueOf(currentCoins));
+    private void updateCoinTextView(String userId) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+
+        userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int userCoins = dataSnapshot.getValue(Integer.class);
+                    binding.coin.setText(String.valueOf(userCoins));
+                } else {
+                    Log.e(TAG, "User coins data not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Error fetching user coins: " + databaseError.getMessage());
+            }
+        });
     }
 }

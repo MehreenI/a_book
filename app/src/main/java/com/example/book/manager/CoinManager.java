@@ -2,6 +2,8 @@ package com.example.book.manager;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -14,9 +16,10 @@ public class CoinManager extends Manager {
 
     private final String TAG = "CoinManager";
     private int totalCoins;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference ;
 
     public CoinManager() {
+        Initialize();
     }
 
     public CoinManager(String userId) {
@@ -52,14 +55,41 @@ public class CoinManager extends Manager {
         });
     }
 
-    public int getTotalCoins() {
-        return totalCoins;
+    public void getTotalCoins(CoinFetchCallback callback) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+
+            userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        totalCoins = dataSnapshot.getValue(Integer.class);
+                        Log.e(TAG, "totalCoins: 23 " + totalCoins);
+                        callback.onCoinsFetched(totalCoins);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "Error getting total coins: " + error.getMessage());
+                }
+            });
+        }
     }
+
 
     public void setTotalCoins(int totalCoins) {
         this.totalCoins = totalCoins;
-        databaseReference.setValue(totalCoins);
+        if (databaseReference != null) {
+            databaseReference.setValue(totalCoins);
+        } else {
+            Log.e(TAG, "Error: databaseReference is null");
+        }
     }
+
 
     public void addCoins(int amount) {
         Log.d(TAG, "addCoins: " + amount + " coins");

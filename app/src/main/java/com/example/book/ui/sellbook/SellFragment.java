@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.book.AppController;
 import com.example.book.R;
+import com.example.book.manager.CoinFetchCallback;
 import com.example.book.manager.CoinManager;
 import com.example.book.ui.Model.Post;
 import com.example.book.ui.extra.Enums;
@@ -278,20 +279,22 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
 
             public void onClick(View v) {
                 CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
-                if (coinManager.getTotalCoins() >= 5) {
-                    // Deduct coins locally
-                    coinManager.deductCoins(5);
+                coinManager.getTotalCoins(new CoinFetchCallback() {
+                    @Override
+                    public void onCoinsFetched(int totalCoins) {
+                        if (totalCoins >= 5) {
+                            // Deduct coins in Firebase
+                            deductCoinsFromFirebase(5);
 
-                    // Deduct coins in Firebase
-                    deductCoinsFromFirebase(5);
-
-                    // Proceed with normal post upload
-                    alertDialog.dismiss();
-                    uploadPost(false);
-                } else {
-                    alertDialog.dismiss();
-                    Toast.makeText(getActivity(), "Not Enough Coins", Toast.LENGTH_LONG).show();
-                }
+                            // Proceed with normal post upload
+                            alertDialog.dismiss();
+                            uploadPost(false);
+                        } else {
+                            alertDialog.dismiss();
+                            Toast.makeText(getActivity(), "Not Enough Coins", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
 

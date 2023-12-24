@@ -21,7 +21,17 @@ import com.example.book.R;
 import com.example.book.databinding.FragmentHomeBinding;
 import com.example.book.manager.CoinManager;
 import com.example.book.ui.Adapter.BookAdapter;
+import com.example.book.ui.Model.Post;
+import com.example.book.ui.bookdetail.BookDetailActivity;
 import com.example.customAdsPackage.GoogleAdMobManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
 
@@ -39,6 +50,9 @@ public class HomeFragment extends Fragment {
     private Activity activity;
     private final String TAG = "HomeFragment";
     private Runnable addCoinsCallback;
+    private RewardedAd mRewarded;
+    private RewardedAd rewardedAd;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +73,18 @@ public class HomeFragment extends Fragment {
         BookAdapter bookAdapter = new BookAdapter(new ArrayList<>()); // Pass an empty list initially
         recyclerView.setAdapter(bookAdapter);
 
+        bookAdapter.setOnItemClickListener(new BookAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Handle item click if needed
+                // For example, you can open the BookDetailActivity here
+                Post clickedBook = bookAdapter.getItem(position);
+                openBookDetailActivity(clickedBook);
+            }
+        });
+
+
+
         // Observe the LiveData from ViewModel and update UI when data changes
         homeViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             // Update RecyclerView adapter with the new data
@@ -74,49 +100,68 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), GeneralBook.class);
             startActivity(intent);
         });
-
-        GoogleAdMobManager.getInstance().Initialize(getActivity());
-
-        binding.getCoin.setOnClickListener(view -> {
-            Log.d(TAG, "btnShowRewardAd clicked");
-
-            if (GoogleAdMobManager.getInstance().IsRewardedAdAvailable()) {
-                // Show the rewarded ad
-                GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), addCoinsCallback);
-            } else {
-                Log.d(TAG, "The rewarded ad isn't ready yet.");
+        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+                Log.d(TAG,"On Initialization Completed"+initializationStatus.toString());
             }
         });
+        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
 
-        addCoinsCallback = () -> {
-            // Increment coins in Firebase
-            int coinsToAdd = 10; // or any other amount you want to reward
-
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (currentUser != null) {
-                String userId = currentUser.getUid();
-
-                CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
-
-                // Add coins to Firebase
-                coinManager.addCoinsToFirebase(userId, coinsToAdd);
-
-                // Update the UI or perform any other actions
-                updateCoinTextView(userId);
-
-                // Display a toast or perform any other actions
-                Log.d(TAG, "Added " + coinsToAdd + " coins to user: " + userId);
-                Toast.makeText(getActivity(), "Reward Given: +" + coinsToAdd + " coins", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.e(TAG, "User is not logged in");
-                // Handle the case where the user is not logged in
             }
-        };
+        });
+        // Load the rewarded ad
+        loadRewardedAd();
 
+        // Show the rewarded ad when a button is clicked, for example
+        binding.getCoin.setOnClickListener(v -> showRewardedAd());
         // Fetch and display user's coin information
         fetchUserCoinsAndDisplay();
 
         return root;
+    }
+
+    private void openBookDetailActivity(Post book) {
+        Intent intent = new Intent(getActivity(), BookDetailActivity.class);
+        intent.putExtra("bookName", book.getBookName());
+        intent.putExtra("bookPrice", book.getBookPrice());
+        intent.putExtra("imageUrl", book.getImageUrl());
+        intent.putExtra("description", book.getDescription());
+        startActivity(intent);
+    }
+
+
+    private void loadRewardedAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        RewardedAd.load(getActivity(), "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull RewardedAd ad) {
+                rewardedAd = ad;
+                Toast.makeText(getActivity(), "Rewarded ad loaded successfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                Toast.makeText(getActivity(), "Rewarded ad failed to load", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showRewardedAd() {
+        if (rewardedAd != null) {
+            rewardedAd.show(getActivity(), rewardItem -> {
+                // User earned reward, handle accordingly
+                int rewardAmount = rewardItem.getAmount();
+                String rewardType = rewardItem.getType();
+                Toast.makeText(getActivity(), "Earned " + rewardAmount + " " + rewardType, Toast.LENGTH_SHORT).show();
+                loadRewardedAd();
+            });
+        } else {
+            Toast.makeText(getActivity(), "Rewarded ad not loaded yet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void fetchUserCoinsAndDisplay() {

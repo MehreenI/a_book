@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.book.databinding.ActivityBookListBinding;
 import com.example.book.ui.Model.Post;
+import com.example.book.ui.bookdetail.BookDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,7 +19,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     private List<Post> bookList;
     private OnItemClickListener listener;
-
 
     public BookAdapter(List<Post> bookList) {
         this.bookList = bookList;
@@ -51,28 +51,35 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         // Set the date in the datetime TextView
         holder.binding.datetime.setText(book.getUploadDate());
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (listener != null) {
-//                    int position = holder.getAdapterPosition();
-//                    if (position != RecyclerView.NO_POSITION) {
-//                        listener.onItemClick(position);
-//                        // Open the BookDetailActivity and pass the details
-//                        Intent intent = new Intent(view.getContext(), BookDetailActivity.class);
-//                        intent.putExtra("bookName", book.getBookName());
-//                        intent.putExtra("bookPrice", book.getBookPrice());
-//                        intent.putExtra("imageUrl", book.getImageUrl());
-//                        view.getContext().startActivity(intent);
-//                    }
-//                }
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                        // Open the BookDetailActivity and pass the details
+                        Intent intent = new Intent(view.getContext(), BookDetailActivity.class);
+                        intent.putExtra("bookName", book.getBookName());
+                        intent.putExtra("bookPrice", book.getBookPrice());
+                        intent.putExtra("imageUrl", book.getImageUrl());
+                        intent.putExtra("description", book.getDescription());
+                        intent.putExtra("author",book.getAuthor());
+                        intent.putExtra("condition",book.getCondition());
+                        view.getContext().startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return bookList.size();
+    }
+
+    public Post getItem(int position) {
+        return bookList.get(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -93,4 +100,3 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         }
     }
 }
-

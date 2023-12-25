@@ -1,5 +1,8 @@
 package com.example.book;
 
+import android.content.ContentResolver;
+import android.content.Context;
+
 import com.example.book.manager.CoinManager;
 import com.example.book.manager.Manager;
 
@@ -9,6 +12,7 @@ import java.util.Map;
 
 public class AppController {
     private static AppController instance;
+
     public static synchronized AppController getInstance() {
         if (instance == null) {
             instance = new AppController();
@@ -29,5 +33,8 @@ public class AppController {
         return (T) managerMap.get(managerClass);
     }
 
+    public ContentResolver getContentResolver(Context context) {
+        return context.getContentResolver();
+    }
 
 }

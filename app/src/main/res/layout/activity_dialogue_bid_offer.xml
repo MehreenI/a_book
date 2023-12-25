@@ -7,44 +7,36 @@
 
     <TextView
         android:id="@+id/dialogtxt"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.8"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Do you want to spend 5 coins to feature your post?"
+        android:text="@string/your_request"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
 
     <Button
         android:id="@+id/ok"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="25dp"
         android:layout_marginBottom="32dp"
-        android:text="Yes"
+        android:backgroundTint="@color/feature_post"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnreject"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogtxt"
         app:layout_constraintWidth_percent="0.5" />
 
-    <Button
-        android:id="@+id/btnreject"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/ok"
-        app:layout_constraintEnd_toStartOf="@+id/ok"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ok"
-        app:layout_constraintWidth_percent="0.3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

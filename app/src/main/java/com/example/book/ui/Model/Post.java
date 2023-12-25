@@ -11,13 +11,27 @@ public class Post {
     private String condition;
     private Enums.BookCategory bookCategory;
 
+
+    private Enums.PostType postType;
+
     private String uploadDate;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userId;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(ImageUpload.class)
     }
 
-    public Post(String bookName, String bookPrice, String imageUrl, String author, String description, String condition, String uploadDate, Enums.BookCategory bookCategory) {
+    public Post(String bookName, String bookPrice, String imageUrl, String author, String description, String condition, String uploadDate, Enums.BookCategory bookCategory,String userId, Enums.PostType post_type) {
+        this.userId = userId;
         this.bookName = bookName;
         this.bookPrice = bookPrice;
         this.imageUrl = imageUrl;
@@ -26,6 +40,7 @@ public class Post {
         this.condition = condition;
         this.uploadDate = uploadDate; // Set the upload date to the current date
         this.bookCategory = bookCategory;
+        this.postType = post_type;
     }
 
     public String getBookName() {
@@ -64,4 +79,12 @@ public class Post {
     public void setBookCategory(Enums.BookCategory bookCategory) {
         this.bookCategory = bookCategory;
     }
+    public Enums.PostType getPostType() {
+        return postType;
+    }
+
+    public void setPostType(Enums.PostType postType) {
+        this.postType = postType;
+    }
+
 }

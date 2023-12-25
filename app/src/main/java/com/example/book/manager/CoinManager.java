@@ -17,8 +17,10 @@ public class CoinManager extends Manager {
     private final String TAG = "CoinManager";
     private int totalCoins;
     private DatabaseReference databaseReference ;
+    FirebaseAuth firebaseAuth;
 
     public CoinManager() {
+        firebaseAuth = FirebaseAuth.getInstance();
         Initialize();
     }
 
@@ -97,12 +99,30 @@ public class CoinManager extends Manager {
         setTotalCoins(totalCoins);
     }
 
-    public void deductCoins(int amount) {
-        if (totalCoins >= amount) {
-            totalCoins -= amount;
-            setTotalCoins(totalCoins);
+    public void deductCoinsFromFirebase(int coinsToDeduct) {
+        // Check if firebaseAuth is not null before using it
+        if (firebaseAuth != null && firebaseAuth.getCurrentUser() != null) {
+            String userId = firebaseAuth.getCurrentUser().getUid();
+            DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("coin");
+
+            userCoinsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        int currentCoins = dataSnapshot.getValue(Integer.class);
+                        int newCoinsBalance = currentCoins - coinsToDeduct;
+                        userCoinsRef.setValue(newCoinsBalance);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle database error if needed
+                }
+            });
         } else {
-            // Handle the case where the user doesn't have enough coins.
+            // Handle the case where firebaseAuth or currentUser is null
+            Log.e("CoinManager", "FirebaseAuth or currentUser is null");
         }
     }
 

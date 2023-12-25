@@ -1,131 +1,154 @@
 package com.example.book.ui.sellbook;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.book.AppController;
+import com.example.book.MainActivity;
 import com.example.book.R;
+import com.example.book.databinding.FragmentSellBinding;
 import com.example.book.manager.CoinFetchCallback;
 import com.example.book.manager.CoinManager;
-import com.example.book.ui.Model.Post;
 import com.example.book.ui.extra.Enums;
-import com.example.book.ui.signin.loginActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class SellFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+    private SellViewModel sellViewModel;
+    private FragmentSellBinding binding;
     private static final int GALLERY_REQUEST_CODE = 1000;
-    private Uri imageUri;
     private ImageButton imgGallery;
-    private Button upload_Data, f_post;
-    private StorageReference mStorageReference;
-    private DatabaseReference mDataBaseReference;
 
-    private EditText bookNameEditText;
-    private EditText bookPriceEditText;
-    private EditText bookAuthor;
-    private EditText bookDescription;
-
-    private RadioGroup radioGroup;
-    private RadioButton radioButtonNew;
-    private RadioButton radioButtonUsed;
+    Uri imageUri;
 
     String condition;
-    private Spinner spinner;
-
-    private Enums.BookCategory selectedBookCategory;
-
-    private FirebaseAuth firebaseAuth;
-
+    String bookName;
+    String bookPrice;
+    String author;
+    String description;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sell, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentSellBinding.inflate(inflater, container, false);
+        setupRadioGroup();
+        imgGallery = binding.imageButton; // Initialize ImageButton
+        return binding.getRoot();
+    }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        ContentResolver contentResolver = requireContext().getContentResolver();
-
-        imgGallery = view.findViewById(R.id.imageButton);
-        upload_Data = view.findViewById(R.id.uploadData);
-
-        bookNameEditText = view.findViewById(R.id.bookNameEditText);
-        bookPriceEditText = view.findViewById(R.id.price);
-        bookAuthor = view.findViewById(R.id.bookAuthorEditText);
-        bookDescription = view.findViewById(R.id.DescriptionEditText);
-
-
-        radioGroup = view.findViewById(R.id.radioGroup);
-        radioButtonNew = view.findViewById(R.id.radioButtonNew);
-        radioButtonUsed = view.findViewById(R.id.radioButtonUsed);
-        f_post = view.findViewById(R.id.featurePost);
-
-        spinner = view.findViewById(R.id.category_book);
-        if (getActivity() != null) {
-
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.book_category, android.R.layout.simple_spinner_item);
-
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-
-            spinner.setOnItemSelectedListener(this);
-        }
-
-        mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
-        mDataBaseReference = FirebaseDatabase.getInstance().getReference("uploads");
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.radioButtonNew) {
+    private void setupRadioGroup() {
+        binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.radioButtonNew.getId()) {
                 condition = "New";
-            } else if (checkedId == R.id.radioButtonUsed) {
-                condition = "Used";
+            } else {
+                condition = "Used"; // Assuming "Used" is the correct condition
             }
         });
+    }
 
-        imgGallery.setOnClickListener(v -> pickImageFromGallery());
-        upload_Data.setOnClickListener(v -> checkAndUploadPost());
-        f_post.setOnClickListener(v -> uploadPost(true));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        sellViewModel = new ViewModelProvider(this).get(SellViewModel.class);
+
+        setupSpinner();
+
+        // Set up click listeners
+        binding.imageButton.setOnClickListener(v -> pickImageFromGallery());
+        binding.uploadData.setOnClickListener(v -> uploadPost(false));
+//        binding.featurePost.setOnClickListener(v -> uploadPost(true));
+        binding.featurePost.setOnClickListener(v -> showFeaturedDialogueBox());
+
+        // Observe the featured post confirmation LiveData
+        sellViewModel.getFeaturedPostConfirmation().observe(getViewLifecycleOwner(), isConfirmed -> {
+            if (isConfirmed) {
+                // Handle the case where the user confirmed the featured post
+                Toast.makeText(requireContext(), "Post will be featured!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle the case where the user rejected the featured post
+                Toast.makeText(requireContext(), "Post will not be featured", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private AlertDialog alertDialog;
+
+    private void showFeaturedDialogueBox() {
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false); // Set the dialog to be non-cancelable
+
+        // Inflate your custom layout for the dialog
+        View view = getLayoutInflater().inflate(R.layout.activity_dialogue_confirm_feature, null);
+
+        // Find views by ID
+        TextView dialogTxt = view.findViewById(R.id.dialogtxt);
+        Button btnConfirm = view.findViewById(R.id.ok);
+        Button btnReject = view.findViewById(R.id.btnreject);
+
+        dialogTxt.setText("Do you want to spend 5 coins to feature your post?");
+
+        // Set actions for the positive button
+        btnConfirm.setOnClickListener(v -> {
+            CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+            coinManager.getTotalCoins(new CoinFetchCallback() {
+                @Override
+                public void onCoinsFetched(int totalCoins) {
+                    if (totalCoins >= 5) {
+                        // Deduct coins in Firebase
+                        coinManager.deductCoinsFromFirebase(5);
+
+                        // Proceed with normal post upload
+                        uploadPost(true);
+                    } else {
+                        Toast.makeText(getActivity(), "Not Enough Coins", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        });
+
+        // Set actions for the negative button
+        btnReject.setOnClickListener(v -> alertDialog.dismiss());
+
+        // Create or update the dialog
+        builder.setView(view);
+        alertDialog = builder.create();
+
+        // Show the dialog
+        alertDialog.show();
+    }
 
 
-        return view;
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.book_category,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.categoryBook.setAdapter(adapter);
+        binding.categoryBook.setOnItemSelectedListener(this);
     }
 
     private void pickImageFromGallery() {
@@ -133,7 +156,6 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         galleryIntent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,223 +167,61 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         }
     }
 
-    private void checkAndUploadPost() {
-        // Check if the user is logged in
-        if (firebaseAuth.getCurrentUser() != null) {
-            // User is logged in, proceed to upload post
-            uploadPost(false);
-        } else {
-            // User is not logged in, redirect to LoginActivity
-            startActivity(new Intent(getActivity(), loginActivity.class));
-            Toast.makeText(getActivity(), "Please log in to add a post.", Toast.LENGTH_SHORT).show();
-        }
-    }
+    private void uploadPost(boolean isFeatured) {
+        bookName = binding.bookNameEditText.getText().toString();
+        author = binding.bookAuthorEditText.getText().toString();
+        bookPrice = binding.price.getText().toString();
+        description = binding.DescriptionEditText.getText().toString();
 
-    public void uploadPost(boolean isFeatured) {
-        if (imageUri != null) {
-            StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        if (binding != null && imageUri != null) { // Null checks
+            if (isFeatured) {
+                sellViewModel.setPostType(Enums.PostType.FEATURED);
+                Log.e("FEATURED","Post is Featured");
+            } else {
+                sellViewModel.setPostType(Enums.PostType.NORMAL);
+                Log.e("FEATURED","Post is not Featured");
 
-            fileReference.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            String downloadUrl = uri.toString();
-                            String bookName = bookNameEditText.getText().toString();
-                            String bookPrice = bookPriceEditText.getText().toString();
-                            String author = bookAuthor.getText().toString();
-                            String description = bookDescription.getText().toString();
-                            String old_new_condition = condition;
-
-                            // Get the current date and time
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
-                            String uploadDate = sdf.format(new Date());
-
-                            // Verify if any field is empty
-                            if (!bookName.isEmpty() && !bookPrice.isEmpty() && !author.isEmpty() && !description.isEmpty() && !uploadDate.isEmpty()) {
-//                                 If it's a featured post, show the confirmation dialog
-                                if (isFeatured) {
-                                    showFeaturedDialog();
-                                } else {
-                                    // If not a featured post, proceed with normal post
-                                    postNormal(uploadDate, bookName, bookPrice, author, old_new_condition, description, downloadUrl);
-                                }
-                            } else {
-                                if (getActivity() != null) {
-
-                                    Toast.makeText(getActivity(), "Please fill in all the fields", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        if (getActivity() != null) {
-
-                            Toast.makeText(getActivity(), "Fail to Upload Image", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            if (getActivity() != null) {
-
-                Toast.makeText(getActivity(), "Please fill in all the Fields", Toast.LENGTH_SHORT).show();
             }
+
+            // Create Post object
+            sellViewModel.uploadPost(requireActivity(), bookName, bookPrice, author, description, condition, imageUri);
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            clearFields();
+        } else {
+            // Handle the case where binding or imageUri is null
+            Toast.makeText(requireContext(), "Error uploading post", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void postNormal(String uploadDate, String bookName, String bookPrice, String author,
-                            String old_new_condition, String description, String downloadUrl) {
-        Post upload = new Post(bookName, bookPrice, downloadUrl, author, description, old_new_condition, uploadDate, selectedBookCategory);
-        String uploadId = mDataBaseReference.push().getKey();
-        mDataBaseReference.child(uploadId).setValue(upload);
-        if (getActivity() != null) {
-
-            Toast.makeText(getActivity(), "Post Added Successfully", Toast.LENGTH_SHORT).show();
-        }
-        // Clear fields after posting
-        clearFields();
-    }
-
-    private void clearFields() {
-        // Clear all the input fields
-        bookNameEditText.setText("");
-        bookPriceEditText.setText("");
-        bookAuthor.setText("");
-        bookDescription.setText("");
-        // Clear other fields as needed
-    }
-
-    private String getFileExtension(Uri uri) {
-
-        ContentResolver contentResolver = getActivity().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-    //    AdapterView.OnitemSelected class Methods
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String selectedItem = adapterView.getItemAtPosition(i).toString();
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selectedItem = parent.getItemAtPosition(position).toString();
 
         // Set the selectedBookCategory based on the spinner item
         if (selectedItem.equals("Academic")) {
-            Toast.makeText(getActivity(), "Academic is selected", Toast.LENGTH_SHORT).show();
-            selectedBookCategory = Enums.BookCategory.ACADEMIC;
+            Toast.makeText(requireContext(), "Academic is selected", Toast.LENGTH_SHORT).show();
+            sellViewModel.setSelectedBookCategory(Enums.BookCategory.ACADEMIC);
         } else if (selectedItem.equals("General")) {
-            Toast.makeText(getActivity(), "General is selected", Toast.LENGTH_SHORT).show();
-            selectedBookCategory = Enums.BookCategory.GENERAL;
+            Toast.makeText(requireContext(), "General is selected", Toast.LENGTH_SHORT).show();
+            sellViewModel.setSelectedBookCategory(Enums.BookCategory.GENERAL);
         }
     }
 
-//    Featured Post:
-
-
-    private AlertDialog alertDialog;
-
-    private void showFeaturedDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false); // Set the dialog to be non-cancelable
-
-        // Inflate your custom layout for the dialog
-        View view = getLayoutInflater().inflate(R.layout.activity_dialogue_confirm_feature, null);
-
-        // Find views by ID
-        TextView dialogTxt = view.findViewById(R.id.dialogtxt);
-        Button btnConfirm = view.findViewById(R.id.btnconfirm);
-        Button btnReject = view.findViewById(R.id.btnreject);
-
-        dialogTxt.setText("Do you want to spend 5 coins to feature your post?");
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
-
-        // Set actions for the positive button
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-            public void onClick(View v) {
-                CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
-                coinManager.getTotalCoins(new CoinFetchCallback() {
-                    @Override
-                    public void onCoinsFetched(int totalCoins) {
-                        if (totalCoins >= 5) {
-                            // Deduct coins in Firebase
-                            deductCoinsFromFirebase(5);
-
-                            // Proceed with normal post upload
-                            alertDialog.dismiss();
-                            uploadPost(false);
-                        } else {
-                            alertDialog.dismiss();
-                            Toast.makeText(getActivity(), "Not Enough Coins", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        });
-
-        // Set actions for the negative button
-        btnReject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-
-        // Create the dialog
-        builder.setView(view);
-        alertDialog = builder.create();
-
-        // Show the dialog
-        alertDialog.show();
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Handle the case where nothing is selected in the spinner
     }
-
-    private void deductCoinsFromFirebase(int coinsToDeduct) {
-        // Get the user's ID from Firebase Auth
-        String userId = firebaseAuth.getCurrentUser().getUid();
-
-        // Reference to the user's coin data in Firebase
-        DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("coin");
-
-        userCoinsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Get the current coin balance
-                    int currentCoins = dataSnapshot.getValue(Integer.class);
-
-                    // Log the retrieved data
-                    Log.d("CoinDeduction", "Current Coins: " + currentCoins);
-
-                    // Deduct the coins
-                    int newCoinsBalance = currentCoins - coinsToDeduct;
-
-                    // Update the user's coin balance in Firebase
-                    userCoinsRef.setValue(newCoinsBalance);
-                } else {
-                    Log.d("CoinDeduction", "DataSnapshot does not exist");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error if needed
-                Log.e("CoinDeduction", "Database Error: " + databaseError.getMessage());
-            }
-        });
+    private void clearFields() {
+        binding.bookNameEditText.setText("");
+        binding.price.setText("");
+        binding.bookAuthorEditText.setText("");
+        binding.DescriptionEditText.setText("");
     }
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Dismiss the dialog if it is showing
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
-    }
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+        binding = null;
     }
 }

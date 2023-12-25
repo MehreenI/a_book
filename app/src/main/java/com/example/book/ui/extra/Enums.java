@@ -10,9 +10,14 @@ public class Enums {
         ACADEMIC,
         GENERAL
     }
-    public enum UserStatus {
-        ACTIVE,
-        NONACTIVE,
-        SUSPENDED,
+
+    public enum BidStatus {
+        PENDING,
+        ACCEPTED,
+        REJECTED
+    }
+    public enum PostType{
+        FEATURED,
+        NORMAL
     }
 }

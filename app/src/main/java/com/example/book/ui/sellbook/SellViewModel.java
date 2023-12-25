@@ -118,7 +118,7 @@ public class SellViewModel extends ViewModel {
 
         String uploadId = mDataBaseReference.push().getKey();
 
-        mDataBaseReference.child("seller").child(userId).child(uploadId).setValue(upload);
+        mDataBaseReference.child(uploadId).setValue(upload);
 
         Toast.makeText(activity, "Post Added Successfully", Toast.LENGTH_SHORT).show();
 

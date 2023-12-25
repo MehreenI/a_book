@@ -3,7 +3,6 @@ package com.example.book.ui.bookdetail;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,7 @@ import com.example.book.R;
 import com.example.book.databinding.ActivityBookDetailBinding;
 import com.example.book.manager.CoinFetchCallback;
 import com.example.book.manager.CoinManager;
-import com.example.book.ui.home.HomeFragment;
+import com.example.book.ui.Model.Bid;
 import com.example.book.ui.signin.loginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +33,8 @@ public class BookDetailActivity extends AppCompatActivity {
     private ActivityBookDetailBinding binding;
     private Dialog dialogue;
     private FirebaseAuth firebaseAuth;
+    String bookPrice;
+    String sellerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,12 @@ public class BookDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String bookName = intent.getStringExtra("bookName");
-        String bookPrice = intent.getStringExtra("bookPrice");
+        bookPrice = intent.getStringExtra("bookPrice");
         String imageUrl = intent.getStringExtra("imageUrl");
         String description = intent.getStringExtra("description");
         String author = intent.getStringExtra("author");
         String condition = intent.getStringExtra("condition");
+        sellerId = intent.getStringExtra("sellerId"); // Assuming you have sellerId in the intent
 
         // Set data to the views
         binding.bookName.setText(bookName);
@@ -71,7 +73,6 @@ public class BookDetailActivity extends AppCompatActivity {
                 userLoginChecked();
             }
         });
-
     }
 
     private void showInterestedDialogueBox() {
@@ -91,19 +92,23 @@ public class BookDetailActivity extends AppCompatActivity {
                         if (totalCoins >= 5) {
                             // Deduct coins in Firebase
                             deductCoinsFromFirebase(5);
+
+                            // Create and send bid request
+                            sendBidRequest(Integer.parseInt(bookPrice), sellerId); // Pass sellerId to the method
+
                             Toast.makeText(BookDetailActivity.this, "You are interested! Coins deducted: 5", Toast.LENGTH_SHORT).show();
 
                             // Close the dialog when the "OK" button is clicked
                             dialogue.dismiss();
 
-                            // Delay starting MainActivity by 1 seconds so that updated coins are loaded
+                            // Delay starting MainActivity by 1 second so that updated coins are loaded
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
-                            }, 1000); // 5000 milliseconds = 5 seconds
+                            }, 1000); // 1000 milliseconds = 1 second
                         } else {
                             Toast.makeText(BookDetailActivity.this, "Not enough coins. Please earn more coins.", Toast.LENGTH_SHORT).show();
                         }
@@ -113,6 +118,32 @@ public class BookDetailActivity extends AppCompatActivity {
         });
 
         dialogue.show();
+    }
+
+    private void sendBidRequest(int bidAmount, String sellerId) {
+        // Get the user's ID from Firebase Auth
+        String bidderId = firebaseAuth.getCurrentUser().getUid();
+
+        // Create a new Bid object
+        Bid bid = new Bid();
+        bid.setBidderId(bidderId);
+        bid.setAmount(bidAmount);
+        bid.setTimestamp(System.currentTimeMillis());
+        bid.setSellerId(sellerId);
+
+        // Reference to the bids node in Firebase
+        DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
+
+        // Push the bid to Firebase
+        String bidId = bidsRef.push().getKey();
+        bid.setBidId(bidId);
+        bidsRef.child(bidId).setValue(bid);
+
+        // Notify the seller about the bid with additional details
+        DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids").child(bidId);
+        sellerBidsRef.child("bidderId").setValue(bidderId);
+        sellerBidsRef.child("amount").setValue(bidAmount);
+        sellerBidsRef.child("timestamp").setValue(System.currentTimeMillis());
     }
 
     private void userLoginChecked() {

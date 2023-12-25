@@ -13,6 +13,8 @@ public class Bid implements Serializable {
 
 
     private String sellerId;
+
+    private String bookId;
     private int amount;
     private long timestamp;
     private Enums.BidStatus bidStatus;
@@ -23,9 +25,10 @@ public class Bid implements Serializable {
         setBidStatus(Enums.BidStatus.PENDING);
     }
 
-    public Bid(String bidId, String bidderId, String sellerId, int amount, long timestamp, Enums.BidStatus bidStatus) {
+    public Bid(String bidId, String bidderId, String sellerId, String bookId, int amount, long timestamp, Enums.BidStatus bidStatus) {
         this.bidId = bidId;
         this.bidderId = bidderId;
+        this.bookId = bookId;
         this.amount = amount;
         this.timestamp = timestamp;
         this.bidStatus = bidStatus;
@@ -78,5 +81,13 @@ public class Bid implements Serializable {
 
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }

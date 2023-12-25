@@ -4,34 +4,70 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.book.databinding.FragmentNotificationsBinding;
+import com.example.book.R;
+import com.example.book.ui.Adapter.NotificationAdapter;
+import com.example.book.ui.Model.Bid;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class NotificationsFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private RecyclerView recyclerView;
+    private NotificationAdapter notificationAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        recyclerView = root.findViewById(R.id.recycler_view);
+        notificationAdapter = new NotificationAdapter();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setAdapter(notificationAdapter);
+
+        // Load and set your notification data from Firebase
+        getNotificationData();
+
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void getNotificationData() {
+        List<Bid> notificationList = new ArrayList<>();
+
+        DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
+
+        bidsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Bid bid = snapshot.getValue(Bid.class);
+                    notificationList.add(bid);
+                }
+
+                // Reverse the list to show the latest bids at the top
+                List<Bid> reversedList = new ArrayList<>(notificationList);
+                Collections.reverse(reversedList);
+
+                notificationAdapter.setNotificationList(reversedList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error
+            }
+        });
     }
 }

@@ -13,6 +13,7 @@ import com.example.book.ui.Model.Post;
 import com.example.book.ui.bookdetail.BookDetailActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
@@ -64,7 +65,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                         intent.putExtra("bookPrice", book.getBookPrice());
                         intent.putExtra("imageUrl", book.getImageUrl());
                         intent.putExtra("description", book.getDescription());
-                        intent.putExtra("author",book.getAuthor());
+                        ArrayList<String> authorsList = new ArrayList<>(book.getAuthors());
+                        intent.putStringArrayListExtra("author", authorsList);
                         intent.putExtra("condition",book.getCondition());
                         intent.putExtra("sellerId",book.getUserId());
                         view.getContext().startActivity(intent);

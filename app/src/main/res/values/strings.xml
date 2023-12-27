@@ -53,6 +53,7 @@
     <string name="interested">Interested</string>
     <string name="offer">Offer</string>
     <string name="your_request">Your request is sent to Seller!\n</string>
+    <string name="add_more_authors">Add More Authors</string>
 
     <string-array name="book_category">
         <item>Select Category</item>

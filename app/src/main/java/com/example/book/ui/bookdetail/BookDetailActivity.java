@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class BookDetailActivity extends AppCompatActivity {
 
     private ActivityBookDetailBinding binding;
@@ -52,7 +54,7 @@ public class BookDetailActivity extends AppCompatActivity {
         bookPrice = intent.getStringExtra("bookPrice");
         String imageUrl = intent.getStringExtra("imageUrl");
         String description = intent.getStringExtra("description");
-        String author = intent.getStringExtra("author");
+        ArrayList<String> authorsList = getIntent().getStringArrayListExtra("author");
         String condition = intent.getStringExtra("condition");
         sellerId = intent.getStringExtra("sellerId"); // Assuming you have sellerId in the intent
 
@@ -60,7 +62,14 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.bookName.setText(bookName);
         binding.bookPrice.setText("Price: " + bookPrice + "/-");
         binding.description.setText(description);
-        binding.author.setText(author);
+        String authorsText = "Authors: ";
+        for (String author : authorsList) {
+            authorsText += author + ", ";
+        }
+        // Remove the trailing comma and space
+        authorsText = authorsText.replaceAll(", $", "");
+
+        binding.author.setText(authorsText);
         binding.condition.setText(condition);
 
         // Load image using Picasso
@@ -78,7 +87,7 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.offerButtonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("offered","offer button cliecked");
+                Log.e("offered", "offer button cliecked");
                 showOfferedDialogue();
             }
         });

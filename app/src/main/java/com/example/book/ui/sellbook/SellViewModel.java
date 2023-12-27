@@ -38,9 +38,13 @@ import com.example.book.databinding.FragmentSellBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class SellViewModel extends ViewModel {
+    private final MutableLiveData<Boolean> featuredPostConfirmation = new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+
     private static final int GALLERY_REQUEST_CODE = 1000;
 
     private Uri imageUri;
@@ -55,17 +59,20 @@ public class SellViewModel extends ViewModel {
 
     private FragmentSellBinding binding;
 
-    private MutableLiveData<Boolean> featuredPostConfirmation = new MutableLiveData<>();
+    public LiveData<Boolean> getFeaturedPostConfirmation() {
+        return featuredPostConfirmation;
+    }
 
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
     public SellViewModel() {
         firebaseAuth = FirebaseAuth.getInstance();
         mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
         mDataBaseReference = FirebaseDatabase.getInstance().getReference("uploads");
     }
 
-    public LiveData<Boolean> getFeaturedPostConfirmation() {
-        return featuredPostConfirmation;
-    }
+
 
     public void pickImageFromGallery(Activity activity) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
@@ -73,8 +80,8 @@ public class SellViewModel extends ViewModel {
         activity.startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
     }
 
-    public void uploadPost(Activity activity,
-                           String bookName, String bookPrice, String author, String description, String condition, Uri imageUri) {
+    public void uploadPost(Activity activity, String bookName, String bookPrice, List<String> author, String description, String condition, Uri imageUri) {
+
         if (firebaseAuth.getCurrentUser() != null) {
             if (imageUri != null) {
                 StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri, activity));
@@ -92,10 +99,8 @@ public class SellViewModel extends ViewModel {
 
                                 if (!bookName.isEmpty() && !bookPrice.isEmpty() && !author.isEmpty() && !description.isEmpty() && !uploadDate.isEmpty()) {
                                     post(activity, userId, uploadDate, bookName, bookPrice, author, oldNewCondition, description, downloadUrl);
-
-
                                 } else {
-                                    Toast.makeText(activity, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+                                    errorMessage.setValue("Please fill in all the fields");
                                 }
                             });
                         })
@@ -112,16 +117,15 @@ public class SellViewModel extends ViewModel {
         }
     }
 
-    private void post(Activity activity, String userId, String uploadDate, String bookName, String bookPrice, String author,
+    private void post(Activity activity, String userId, String uploadDate, String bookName, String bookPrice, List<String> authors,
                       String oldNewCondition, String description, String downloadUrl) {
-        Post upload = new Post(bookName, bookPrice, downloadUrl, author, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
+        Post upload = new Post(bookName, bookPrice, downloadUrl, authors, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
 
         String uploadId = mDataBaseReference.push().getKey();
 
         mDataBaseReference.child(uploadId).setValue(upload);
 
         Toast.makeText(activity, "Post Added Successfully", Toast.LENGTH_SHORT).show();
-
     }
 
 

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ui.sellbook.SellFragment">
-
     <!-- Add a space between top_bar and the ScrollView -->
     <View
         android:layout_width="match_parent"
@@ -43,10 +40,7 @@
                 android:layout_height="5dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+                 />
 
             <!-- TextView Heading -->
             <TextView
@@ -88,7 +82,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/addMoreImage"
+                android:id="@+id/addMoreImages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -110,10 +104,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+                 />
 
 
             <!-- Text View Heading -->
@@ -160,10 +151,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -211,10 +199,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvheading2" />
+                 />
 
             <EditText
                 android:id="@+id/bookNameEditText"
@@ -232,21 +217,46 @@
                 android:textColor="@color/text_hint"
                 android:textColorHint="@color/text_hint" />
 
-            <EditText
-                android:id="@+id/bookAuthorEditText"
+            <LinearLayout
+                android:id="@+id/authorsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/round_corner"
-                android:backgroundTint="@color/background_sale"
-                android:hint="Author"
-                android:padding="15dp"
-                android:paddingStart="20dp"
-                android:paddingTop="120dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/text_hint"
-                android:textColorHint="@color/text_hint" />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <EditText
+                    android:id="@+id/edit_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corner"
+                    android:backgroundTint="@color/background_sale"
+                    android:hint="Author"
+                    android:padding="15dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="120dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/text_hint"
+                    android:textColorHint="@color/text_hint" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addMoreAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/add_more_authors"/>
 
             <EditText
                 android:id="@+id/DescriptionEditText"
@@ -298,4 +308,3 @@
 
     </ScrollView>
 </FrameLayout>
-

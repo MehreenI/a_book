@@ -1,5 +1,6 @@
 package com.example.book.ui.sellbook;
 
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,12 @@ import com.example.book.databinding.FragmentSellBinding;
 import com.example.book.manager.CoinFetchCallback;
 import com.example.book.manager.CoinManager;
 import com.example.book.ui.extra.Enums;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SellFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -37,6 +46,8 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     private FragmentSellBinding binding;
     private static final int GALLERY_REQUEST_CODE = 1000;
     private ImageButton imgGallery;
+    LinearLayout layoutList;
+    Button addAuthor;
 
     Uri imageUri;
 
@@ -49,10 +60,51 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSellBinding.inflate(inflater, container, false);
+        sellViewModel = new ViewModelProvider(this).get(SellViewModel.class);
         setupRadioGroup();
         imgGallery = binding.imageButton; // Initialize ImageButton
+        layoutList = binding.authorsContainer;
+        addAuthor = binding.addMoreAuthor;
+
+        sellViewModel.getFeaturedPostConfirmation().observe(getViewLifecycleOwner(), isConfirmed -> {
+            if (isConfirmed) {
+                // Handle the case where the user confirmed the featured post
+                Toast.makeText(requireContext(), "Post will be featured!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Handle the case where the user rejected the featured post
+                Toast.makeText(requireContext(), "Post will not be featured", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sellViewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
+            // Handle error message
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        });
+
+
+        addAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("Add Button", "Add Button clicked");
+                addAuthorEditText();
+            }
+        });
+
         return binding.getRoot();
     }
+
+    public void addAuthorEditText() {
+        // Inflate the layout for a single author row
+        View authorRow = getLayoutInflater().inflate(R.layout.edit_text_author, null, false);
+
+        // Find the EditText within the inflated layout
+        EditText editText = authorRow.findViewById(R.id.edit_author);
+        editText.setId(View.generateViewId()); // Generate unique ID for each EditText
+
+        // Add the new EditText to the authorsContainer
+        layoutList.addView(authorRow);
+    }
+
 
     private void setupRadioGroup() {
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -167,24 +219,31 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         }
     }
 
-    private void uploadPost(boolean isFeatured) {
+    public void uploadPost(boolean isFeatured) {
         bookName = binding.bookNameEditText.getText().toString();
-        author = binding.bookAuthorEditText.getText().toString();
         bookPrice = binding.price.getText().toString();
         description = binding.DescriptionEditText.getText().toString();
+
+        // Collect authors from added EditText fields
+        List<String> authors = new ArrayList<>();
+        for (int i = 0; i < layoutList.getChildCount(); i++) {
+            View authorRow = layoutList.getChildAt(i);
+            EditText authorEditText = authorRow.findViewById(R.id.edit_author);
+            String author = authorEditText.getText().toString();
+            authors.add(author);
+        }
 
         if (binding != null && imageUri != null) { // Null checks
             if (isFeatured) {
                 sellViewModel.setPostType(Enums.PostType.FEATURED);
-                Log.e("FEATURED","Post is Featured");
+                Log.e("FEATURED", "Post is Featured");
             } else {
                 sellViewModel.setPostType(Enums.PostType.NORMAL);
-                Log.e("FEATURED","Post is not Featured");
-
+                Log.e("FEATURED", "Post is not Featured");
             }
 
             // Create Post object
-            sellViewModel.uploadPost(requireActivity(), bookName, bookPrice, author, description, condition, imageUri);
+            sellViewModel.uploadPost(requireActivity(), bookName, bookPrice, authors, description, condition, imageUri);
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             clearFields();
@@ -212,10 +271,11 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     public void onNothingSelected(AdapterView<?> parent) {
         // Handle the case where nothing is selected in the spinner
     }
+
     private void clearFields() {
         binding.bookNameEditText.setText("");
         binding.price.setText("");
-        binding.bookAuthorEditText.setText("");
+//        binding.bookAuthorEditText.setText("")
         binding.DescriptionEditText.setText("");
     }
 

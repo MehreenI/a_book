@@ -72,12 +72,6 @@
                     android:src="@android:drawable/ic_input_add" />
 
                 <!-- ImageView for selected image (initially invisible) -->
-                <ImageView
-                    android:id="@+id/selectedImageView"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:visibility="gone"
-                    android:contentDescription="@string/book_image" />
 
             </LinearLayout>
 

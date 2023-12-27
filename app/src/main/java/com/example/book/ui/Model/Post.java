@@ -9,8 +9,6 @@ public class Post {
     private String bookPrice;
     private String imageUrl;
 
-
-
     private List<String> authors;
     private String description;
     private String condition;

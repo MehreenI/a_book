@@ -62,7 +62,9 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.bookName.setText(bookName);
         binding.bookPrice.setText("Price: " + bookPrice + "/-");
         binding.description.setText(description);
-        String authorsText = "Authors: ";
+
+//        displaying Authors seperated by comma
+        String authorsText = null;
         for (String author : authorsList) {
             authorsText += author + ", ";
         }

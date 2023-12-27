@@ -33,7 +33,7 @@
     <string name="create_account">Create Account</string>
     <string name="welcome_to_bookmart">WELCOME TO BOOKMART</string>
     <string name="skip">Skip for now</string>
-    <string name="alreay_on_bookmart">Alreay on Bookmart?</string>
+    <string name="alreay_on_bookmart">Already on Bookmart?</string>
     <string name="name">Name:</string>
     <string name="phone_number">Phone Number:</string>
     <string name="confirm_password">Confirm Password:</string>
@@ -42,7 +42,7 @@
     <string name="select_image">Select Image</string>
     <string name="add_more_images">Add More Images</string>
     <string name="choose_book_condition">Choose Book Condition</string>
-    <string name="set_price">price</string>
+    <string name="set_price">Set Price</string>
     <string name="Add_Post">Add Post</string>
     <string name="Add_fea_Post">Add Feature Post</string>
     <string name="sell">Sell</string>
@@ -60,5 +60,11 @@
         <item>Academic</item>
         <item>General</item>
     </string-array>
+    <string name="get_more_bu">
+Get more buyers by getting you ad ranked top using a featured post
+</string>
 
+    <string name="book_detail">
+Enter Book Details
+</string>
 </resources>

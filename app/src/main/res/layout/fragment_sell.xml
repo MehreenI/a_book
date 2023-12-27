@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".ui.sellbook.SellFragment">
     <!-- Add a space between top_bar and the ScrollView -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_height="2dp" />
 
     <!-- ScrollView for text content -->
     <ScrollView
@@ -28,16 +29,17 @@
                 android:id="@+id/category_book"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/spinner_background"
                 android:padding="10dp"
                 android:paddingEnd="40dp" />
+
             <View
                 android:id="@+id/viewseparator1"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/gray"
                  />
@@ -88,13 +90,13 @@
                 android:paddingEnd="8dp"
                 android:text="@string/add_more_images"
                 android:textColor="@color/theme"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <View
                 android:id="@+id/viewseparator2"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
@@ -124,7 +126,7 @@
                     android:id="@+id/radioButtonNew"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:paddingEnd="20dp"
+                    android:paddingEnd="50dp"
                     android:text="New"
                     android:textColor="@color/black" />
 
@@ -138,10 +140,11 @@
                     android:textColorHint="@color/text_hint" />
             </RadioGroup>
 
+
             <View
                 android:id="@+id/viewseparator3"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
@@ -174,13 +177,12 @@
                     android:background="@drawable/round_corner"
                     android:backgroundTint="@color/background_sale"
                     android:hint="Rs. 1000/-"
-                    android:inputType="number"
                     android:padding="10dp"
                     android:paddingStart="20dp"
-                    android:paddingTop="120dp"
+                    android:paddingTop="18dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="20dp"
-                    android:textColor="@color/text_hint"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/text_hint" />
             </LinearLayout>
 
@@ -189,7 +191,7 @@
             <View
                 android:id="@+id/viewseparator4"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
                 android:background="@color/gray"
@@ -203,12 +205,9 @@
                 android:background="@drawable/round_corner"
                 android:backgroundTint="@color/background_sale"
                 android:hint="Book Name"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:paddingStart="20dp"
-                android:paddingTop="120dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/text_hint"
+                android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />
 
             <LinearLayout
@@ -223,18 +222,17 @@
                     android:id="@+id/edit_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/round_corner"
                     android:backgroundTint="@color/background_sale"
                     android:hint="Author"
-                    android:padding="15dp"
+                    android:padding="12dp"
                     android:paddingStart="20dp"
                     android:paddingTop="120dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="20dp"
-                    android:textColor="@color/text_hint"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/text_hint" />
             </LinearLayout>
 
@@ -244,12 +242,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="10dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textSize="13sp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/theme"
+                android:drawableEnd="@drawable/add_24"
+                android:shadowColor="@color/white"
+                android:backgroundTint="@color/white"
                 android:text="@string/add_more_authors"/>
 
             <EditText
@@ -260,42 +259,94 @@
                 android:background="@drawable/round_corner"
                 android:backgroundTint="@color/background_sale"
                 android:hint="Book Description"
-                android:padding="15dp"
+                android:padding="24dp"
                 android:paddingStart="20dp"
-                android:paddingTop="120dp"
                 android:paddingEnd="10dp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/text_hint"
+                android:textColor="@color/black"
                 android:textColorHint="@color/text_hint" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginVertical="10dp">
+                <TextView
+                    android:id="@+id/tvheading5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:text="Show my phone number on the post "
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/phoneswitch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/phoneswitch" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/phoneswitch"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvheading5"
+                    app:layout_constraintTop_toBottomOf="@+id/viewseparator3" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/uploadData"
-                android:layout_width="286dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/theme"
-                android:padding="15dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="38dp"
+                android:paddingRight="38dp"
                 android:text="@string/Add_Post"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textsell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"                android:text="WANT TO SELL FASTER?"
+                android:textColor="@color/theme"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/get_more_bu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="33dp"
+                android:layout_marginRight="33dp"
+                android:gravity="center_horizontal|top"
+                android:text="@string/get_more_bu"
+                android:textColor="@color/black" />
+
 
             <Button
                 android:id="@+id/featurePost"
-                android:layout_width="290dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/feature_post"
-                android:padding="15dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="28dp"
+                android:paddingRight="28dp"
+                android:layout_marginBottom="30dp"
                 android:text="@string/Add_fea_Post"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                />
 
         </LinearLayout>
 

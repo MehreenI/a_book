@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="6dp"
                     android:layout_weight="1"
                     android:text="Introduction To Java"
                     android:textAllCaps="true"
@@ -63,8 +63,8 @@
                     android:id="@+id/imageView3"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="30dp"
                     android:contentDescription="@string/fav"
                     android:textAlignment="viewEnd"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:contentDescription="@string/loc"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bookName_des"
@@ -112,8 +112,10 @@
                     android:layout_weight="1"
                     android:textAlignment="viewEnd"
                     android:textColor="@color/theme"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3" />
             </LinearLayout>
@@ -121,7 +123,7 @@
             <View
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="2dp"
                 android:background="@color/gray"
                 android:backgroundTint="@color/gray" />
 
@@ -133,7 +135,7 @@
                 android:paddingStart="22dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
-                android:text="Details"
+                android:text="Book Details"
                 android:textColor="@color/theme"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -194,13 +196,7 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/view7"
-                android:layout_width="wrap_content"
-                android:layout_height="4dp"
-                android:layout_weight="1"
-                android:background="@color/gray"
-                android:backgroundTint="@color/gray" />
+
 
             <TextView
                 android:id="@+id/textView13"
@@ -212,7 +208,7 @@
                 android:paddingBottom="8dp"
                 android:text="Description"
                 android:textColor="@color/theme"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -231,38 +227,49 @@
             <View
                 android:id="@+id/viewv"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="2dp"
                 android:background="@color/gray"
                 android:backgroundTint="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/interested"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="71dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/theme"
                     android:onClick="interested"
                     android:text="@string/interested"
+                    android:textAllCaps="false"
                     android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="2dp"
+                    android:layout_height="66dp"
+                    android:background="@color/gray"
+                    android:backgroundTint="@color/gray" />
+
 
                 <Button
                     android:id="@+id/offerButtonBook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="71dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/theme"
-                    android:onClick="offer"
+                    android:backgroundTint="@color/feature_post"
+                    android:onClick="Offer Bid"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="10dp"
                     android:text="@string/offer"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -75,7 +75,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixedHeightView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixedHeightView"
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/password"
@@ -91,7 +92,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etemail" />
+        app:layout_constraintTop_toBottomOf="@+id/etemail"
+        android:inputType="textPassword"/>
 
     <TextView
         android:id="@+id/forgot_password"

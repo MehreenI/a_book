@@ -192,6 +192,7 @@
                     android:background="@drawable/round_corner"
                     android:backgroundTint="@color/background_sale"
                     android:hint="Rs. 1000/-"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:paddingStart="20dp"
                     android:paddingTop="120dp"

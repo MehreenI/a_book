@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.book.R;
 import com.example.book.ui.Adapter.NotificationAdapter;
 import com.example.book.ui.Model.Bid;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +28,7 @@ public class NotificationsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NotificationAdapter notificationAdapter;
+    FirebaseAuth sellerId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,8 +48,10 @@ public class NotificationsFragment extends Fragment {
 
     private void getNotificationData() {
         List<Bid> notificationList = new ArrayList<>();
+        sellerId = FirebaseAuth.getInstance();
+        String currentUserId = sellerId.getCurrentUser().getUid();
 
-        DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
+        DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("bids_Notification");
 
         bidsRef.addValueEventListener(new ValueEventListener() {
             @Override

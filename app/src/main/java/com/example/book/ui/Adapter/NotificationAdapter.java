@@ -46,6 +46,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         private TextView text;
         private TextView bookName;
         private TextView userName;
+        private TextView bookPrice;
+        private TextView bidAmount;
 
         NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,7 +62,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             UserRepository.getInstance().getBookNameById(notification.getBidderId(), new UserRepository.UserNameFetchCallback() {
                 @Override
                 public void onUserNameFetched(String bookName) {
-                    userName.setText("Book Name: " + bookName);
+                    userName.setText(bookName);
                 }
 
                 @Override
@@ -68,8 +70,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     userName.setText("Book Name: Not Found");
                 }
             });
+            if(notification.getbookName() != null){
+                bookName.setText(notification.getbookName());
+            }
+            else{
+                bookName.setText("BookName");
+            }
 
-            bookName.setText("Book Name");  // Replace with actual username
         }
     }
 }

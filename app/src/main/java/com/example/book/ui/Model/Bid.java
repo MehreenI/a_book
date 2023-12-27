@@ -14,8 +14,10 @@ public class Bid implements Serializable {
 
     private String sellerId;
 
-    private String bookId;
+    private String bookName;
     private int amount;
+
+    private int originalPrice;
     private long timestamp;
     private Enums.BidStatus bidStatus;
 
@@ -25,14 +27,15 @@ public class Bid implements Serializable {
         setBidStatus(Enums.BidStatus.PENDING);
     }
 
-    public Bid(String bidId, String bidderId, String sellerId, String bookId, int amount, long timestamp, Enums.BidStatus bidStatus) {
+    public Bid(String bidId, String bidderId, String sellerId, String bookName, int amount, int originalPrice, long timestamp, Enums.BidStatus bidStatus) {
         this.bidId = bidId;
         this.bidderId = bidderId;
-        this.bookId = bookId;
+        this.bookName = bookName;
         this.amount = amount;
         this.timestamp = timestamp;
         this.bidStatus = bidStatus;
         this.sellerId = sellerId;
+        this.originalPrice = originalPrice;
     }
 
     public String getBidId() {
@@ -83,11 +86,19 @@ public class Bid implements Serializable {
         this.sellerId = sellerId;
     }
 
-    public String getBookId() {
-        return bookId;
+    public String getbookName() {
+        return bookName;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setbookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public int getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(int originalPrice) {
+        this.originalPrice = originalPrice;
     }
 }

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.book.AppController;
@@ -35,6 +36,7 @@ public class BookDetailActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     String bookPrice;
     String sellerId;
+    String bookName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class BookDetailActivity extends AppCompatActivity {
         // Get data from the intent
         Intent intent = getIntent();
 
-        String bookName = intent.getStringExtra("bookName");
+        bookName = intent.getStringExtra("bookName");
         bookPrice = intent.getStringExtra("bookPrice");
         String imageUrl = intent.getStringExtra("imageUrl");
         String description = intent.getStringExtra("description");
@@ -73,6 +75,62 @@ public class BookDetailActivity extends AppCompatActivity {
                 userLoginChecked();
             }
         });
+        binding.offerButtonBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("offered","offer button cliecked");
+                showOfferedDialogue();
+            }
+        });
+    }
+
+    private void showOfferedDialogue() {
+        dialogue.setContentView(R.layout.activity_dialogue_offer);
+
+        Button offerButton = dialogue.findViewById(R.id.bid_offer);
+
+        // Move the EditText initialization inside the method
+        EditText bidAmountEditText = dialogue.findViewById(R.id.editTextNumber);
+
+        offerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the text when the button is clicked
+                String bidAmount = bidAmountEditText.getText().toString();
+
+                CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+                coinManager.getTotalCoins(new CoinFetchCallback() {
+                    @Override
+                    public void onCoinsFetched(int totalCoins) {
+                        if (totalCoins >= 5) {
+                            // Deduct coins in Firebase
+                            deductCoinsFromFirebase(5);
+
+                            // Create and send bid request
+                            sendBidRequest(Integer.parseInt(bidAmount), sellerId);
+
+                            Toast.makeText(BookDetailActivity.this, "You are interested! Coins deducted: 5", Toast.LENGTH_SHORT).show();
+
+                            // Close the dialog when the "OK" button is clicked
+                            dialogue.dismiss();
+
+                            // Delay starting MainActivity by 1 second so that updated coins are loaded
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            }, 1000); // 1000 milliseconds = 1 second
+                        } else {
+                            Toast.makeText(BookDetailActivity.this, "Not enough coins. Please earn more coins.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        dialogue.show();
     }
 
     private void showInterestedDialogueBox() {
@@ -80,6 +138,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
         // Find the "OK" button in the dialog layout
         Button okButton = dialogue.findViewById(R.id.ok);
+
 
         // Set click listener on the "OK" button
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +189,9 @@ public class BookDetailActivity extends AppCompatActivity {
         bid.setAmount(bidAmount);
         bid.setTimestamp(System.currentTimeMillis());
         bid.setSellerId(sellerId);
+        bid.setbookName(bookName);
+
+        bid.setOriginalPrice(Integer.parseInt(bookPrice));
 
         // Reference to the bids node in Firebase
         DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
@@ -140,8 +202,10 @@ public class BookDetailActivity extends AppCompatActivity {
         bidsRef.child(bidId).setValue(bid);
 
         // Notify the seller about the bid with additional details
-        DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids").child(bidId);
+        DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids_Notification").child(bidId);
         sellerBidsRef.child("bidderId").setValue(bidderId);
+        sellerBidsRef.child("orignalPrice").setValue(bookPrice);
+        sellerBidsRef.child("bookName").setValue(bookName);
         sellerBidsRef.child("amount").setValue(bidAmount);
         sellerBidsRef.child("timestamp").setValue(System.currentTimeMillis());
     }

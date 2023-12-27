@@ -20,6 +20,7 @@
             android:id="@+id/logo"
             android:layout_width="137dp"
             android:layout_height="137dp"
+            android:layout_marginStart="30dp"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_img" />
 
@@ -117,7 +118,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
+        app:layout_constraintTop_toBottomOf="@+id/user_name"
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/phone"
@@ -128,8 +130,9 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/user_input_style"
         android:hint="@string/phone_number"
-        android:textColor="@color/theme"
+        android:inputType="phone"
         android:padding="8dp"
+        android:textColor="@color/theme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -149,7 +152,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        app:layout_constraintTop_toBottomOf="@+id/phone"
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/confirmPassword"
@@ -165,7 +169,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/btnSignup"
@@ -192,5 +197,7 @@
         android:background="@color/theme"
         android:text="login"
         android:textColor="@color/white"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

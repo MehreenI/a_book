@@ -267,7 +267,11 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/feature_post"
+<<<<<<< HEAD
                     android:onClick="OfferBid"
+=======
+                    android:onClick="Offer Bid"
+>>>>>>> 66334a6adc47c401b37680a1c9bbadb03712148f
                     android:textAllCaps="false"
                     android:layout_marginTop="10dp"
                     android:text="@string/offer"

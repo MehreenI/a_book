@@ -12,11 +12,11 @@
         android:background="@drawable/round_corner"
         android:backgroundTint="@color/background_sale"
         android:hint="Author"
-        android:padding="15dp"
+        android:padding="12dp"
         android:paddingStart="20dp"
         android:paddingTop="120dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
-        android:textColor="@color/text_hint"
+        android:textColor="@color/black"
         android:textColorHint="@color/text_hint" />
 </LinearLayout>

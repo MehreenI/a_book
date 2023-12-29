@@ -48,6 +48,7 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     private String bookPrice;
     private String author;
     private String description;
+    List<String> authors;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         imgGallery = binding.imageButton;
         authorList = binding.authorsContainer;
         addAuthor = binding.addMoreAuthor;
+        authors = new ArrayList<>();
 
         sellViewModel.getFeaturedPostConfirmation().observe(getViewLifecycleOwner(), isConfirmed -> {
             if (isConfirmed) {
@@ -78,9 +80,10 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     public void addAuthorEditText() {
         View authorRow = getLayoutInflater().inflate(R.layout.edit_text_author, null, false);
         EditText editText = authorRow.findViewById(R.id.edit_author);
-        editText.setId(View.generateViewId());
+//        editText.setId(View.generateViewId()); // Generate a unique ID
         authorList.addView(authorRow);
     }
+
 
     private void setupRadioGroup() {
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -118,7 +121,7 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         builder.setCancelable(false);
         View view = getLayoutInflater().inflate(R.layout.activity_dialogue_confirm_feature, null);
         TextView dialogTxt = view.findViewById(R.id.dialogtxt);
-        Button btnConfirm = view.findViewById(R.id.ok);
+        Button btnConfirm = view.findViewById(R.id.btnconfirm);
         Button btnReject = view.findViewById(R.id.btnreject);
 
         dialogTxt.setText("Do you want to spend 5 coins to feature your post?");
@@ -177,11 +180,12 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         bookPrice = binding.price.getText().toString();
         description = binding.DescriptionEditText.getText().toString();
 
-        List<String> authors = new ArrayList<>();
         for (int i = 0; i < authorList.getChildCount(); i++) {
+//            Log.e("Authors","Author added");
             View authorRow = authorList.getChildAt(i);
             EditText authorEditText = authorRow.findViewById(R.id.edit_author);
             authors.add(authorEditText.getText().toString());
+            Log.e("Authors","Author added"+authors);
         }
 
         if (binding != null && imageUri != null) {

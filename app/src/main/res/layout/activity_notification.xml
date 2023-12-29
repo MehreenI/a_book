@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,71 +69,3 @@
         app:layout_constraintTop_toBottomOf="@+id/bookname" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-
-
-
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="49dp"-->
-<!--        android:layout_height="91dp"-->
-<!--        android:layout_marginVertical="3dp"-->
-<!--        android:layout_marginStart="15dp"-->
-<!--        android:layout_marginTop="220dp"-->
-<!--        android:contentDescription="@string/book_image"-->
-<!--        app:srcCompat="@drawable/add_24"-->
-<!--        tools:srcCompat="@drawable/ic_notifications_black_24dp" />-->
-
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/bookname"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_toEndOf="@+id/imageView"-->
-<!--        android:maxLines="2"-->
-<!--        android:text="@string/bookname"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="17sp"-->
-<!--        android:textStyle="bold" />-->
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/UserName"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/bookname"-->
-<!--        android:layout_alignStart="@+id/bookname"-->
-<!--        android:layout_marginStart="-1dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:maxLines="1"-->
-<!--        android:text="Username"-->
-<!--        android:textColor="@color/theme"-->
-<!--        android:textSize="16sp"-->
-<!--        android:textStyle="bold" />-->
-
-<!--    <View-->
-<!--        android:id="@+id/line_6"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:layout_below="@+id/UserName"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_alignParentLeft="true"-->
-<!--        android:background="@color/gray"-->
-<!--        android:layout_marginTop="16dp" />-->
-<!--    <View-->
-<!--        android:id="@+id/line_7"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:layout_below="@+id/line_6"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_alignParentLeft="true"-->
-<!--        android:background="@color/gray"-->
-<!--        android:layout_marginTop="2dp" />-->
-
-<!--</RelativeLayout>-->

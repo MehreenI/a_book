@@ -47,31 +47,41 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void getNotificationData() {
-        List<Bid> notificationList = new ArrayList<>();
-        sellerId = FirebaseAuth.getInstance();
-        String currentUserId = sellerId.getCurrentUser().getUid();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            // User is logged in
+            String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("users").child(currentUserId).child("bids_Notification");
+            DatabaseReference bidsRef = FirebaseDatabase.getInstance()
+                    .getReference("users")
+                    .child(currentUserId)
+                    .child("bids_Notification");
 
-        bidsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Bid bid = snapshot.getValue(Bid.class);
-                    notificationList.add(bid);
+            bidsRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<Bid> notificationList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Bid bid = snapshot.getValue(Bid.class);
+                        notificationList.add(bid);
+                    }
+
+                    // Reverse the list to show the latest bids at the top
+                    List<Bid> reversedList = new ArrayList<>(notificationList);
+                    Collections.reverse(reversedList);
+
+                    notificationAdapter.setNotificationList(reversedList);
                 }
 
-                // Reverse the list to show the latest bids at the top
-                List<Bid> reversedList = new ArrayList<>(notificationList);
-                Collections.reverse(reversedList);
-
-                notificationAdapter.setNotificationList(reversedList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle the error
+                }
+            });
+        } else {
+            // User is not logged in, or there are no notifications
+            List<Bid> emptyList = Collections.emptyList();
+            notificationAdapter.setNotificationList(emptyList);
+        }
     }
 }

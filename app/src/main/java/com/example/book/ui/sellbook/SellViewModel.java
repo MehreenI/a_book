@@ -80,7 +80,7 @@ public class SellViewModel extends ViewModel {
         activity.startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
     }
 
-    public void uploadPost(Activity activity, String bookName, String bookPrice, List<String> author, String description, String condition, Uri imageUri) {
+    public void uploadPost(Activity activity, String bookName, String bookPrice, List<String> authors, String description, String condition, Uri imageUri) {
 
         if (firebaseAuth.getCurrentUser() != null) {
             if (imageUri != null) {
@@ -97,8 +97,9 @@ public class SellViewModel extends ViewModel {
 
                                 String userId = firebaseAuth.getCurrentUser().getUid();
 
-                                if (!bookName.isEmpty() && !bookPrice.isEmpty() && !author.isEmpty() && !description.isEmpty() && !uploadDate.isEmpty()) {
-                                    post(activity, userId, uploadDate, bookName, bookPrice, author, oldNewCondition, description, downloadUrl);
+                                
+                                if (!bookName.isEmpty() && !bookPrice.isEmpty() && !authors.isEmpty() && !description.isEmpty() && !uploadDate.isEmpty()) {
+                                    post(activity, userId, uploadDate, bookName, bookPrice, authors, oldNewCondition, description, downloadUrl);
                                 } else {
                                     errorMessage.setValue("Please fill in all the fields");
                                 }
@@ -119,14 +120,25 @@ public class SellViewModel extends ViewModel {
 
     private void post(Activity activity, String userId, String uploadDate, String bookName, String bookPrice, List<String> authors,
                       String oldNewCondition, String description, String downloadUrl) {
-        Post upload = new Post(bookName, bookPrice, downloadUrl, authors, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
-
+        // Generate a unique key for the post
         String uploadId = mDataBaseReference.push().getKey();
 
-        mDataBaseReference.child(uploadId).setValue(upload);
+        if (uploadId != null) {
+            // Create a reference for the specific post using the generated key
+            DatabaseReference postReference = mDataBaseReference.child(uploadId);
 
-        Toast.makeText(activity, "Post Added Successfully", Toast.LENGTH_SHORT).show();
+            // Create the Post object
+            Post upload = new Post(bookName, bookPrice, downloadUrl, authors, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
+
+            // Set the value of the post in the database
+            postReference.setValue(upload);
+
+            Toast.makeText(activity, "Post Added Successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity, "Failed to generate a unique key for the post", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
 
 

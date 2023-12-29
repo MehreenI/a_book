@@ -64,7 +64,7 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.description.setText(description);
 
 //        displaying Authors seperated by comma
-        String authorsText = null;
+        String authorsText = "";
         for (String author : authorsList) {
             authorsText += author + ", ";
         }

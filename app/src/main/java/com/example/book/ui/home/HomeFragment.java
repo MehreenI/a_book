@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -84,6 +86,21 @@ public class HomeFragment extends Fragment {
         });
 
 
+        SearchView searchView = root.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<Post> filteredList = filterBooks(homeViewModel.getPosts().getValue(), newText);
+                bookAdapter.setData(filteredList);
+                return true;
+            }
+        });
+
 
         // Observe the LiveData from ViewModel and update UI when data changes
         homeViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
@@ -95,6 +112,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AcademicBook.class);
             startActivity(intent);
         });
+
 
         binding.button6.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GeneralBook.class);
@@ -130,6 +148,33 @@ public class HomeFragment extends Fragment {
         intent.putExtra("imageUrl", book.getImageUrl());
         intent.putExtra("description", book.getDescription());
         startActivity(intent);
+    }
+
+    private List<Post> filterBooks(List<Post> books, String query) {
+        List<Post> filteredList = new ArrayList<>();
+
+        if (books != null) {
+            for (Post book : books) {
+                // Check if book title or authors contain the query
+                if (book.getBookName().toLowerCase().contains(query.toLowerCase()) ||
+                        containsAuthor(book.getAuthors(), query.toLowerCase())) {
+                    filteredList.add(book);
+                }
+            }
+        }
+
+        return filteredList;
+    }
+
+    private boolean containsAuthor(List<String> authors, String query) {
+        if (authors != null) {
+            for (String author : authors) {
+                if (author.toLowerCase().contains(query)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

@@ -19,7 +19,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@color/gray"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/feature_post"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/coin_heading"
+                android:textColor="@color/theme"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -51,7 +52,8 @@
                 android:text="@string/coin"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/theme"/>
 
         </LinearLayout>
 
@@ -59,11 +61,11 @@
 
 
         <Button
-            android:id="@+id/login_btn"
+            android:id="@+id/getreward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray"
-            android:text="@string/log_in"
+            android:text="Get coins"
             android:textAllCaps="false"
             android:textColor="@color/theme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,12 +98,13 @@
         android:orientation="horizontal"
         android:paddingStart="20dp"
         android:paddingTop="5dp"
+        android:layout_marginTop="10dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getCoin">
+        app:layout_constraintTop_toBottomOf="@+id/searchView">
 
         <!-- Button 1 -->
         <Button
@@ -151,6 +154,18 @@
 
     </LinearLayout>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintTop_toBottomOf="@id/getCoin"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/search_bg"
+        android:textAppearance="@color/theme"
+        app:queryHint="Search Books/Authors"/>
 
     <TextView
         android:id="@+id/popular_now"
@@ -160,7 +175,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal|top"
         android:text="Featured Books"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textColor="@color/theme"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -174,6 +189,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

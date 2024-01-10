@@ -16,20 +16,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.book.AppController;
+import com.example.book.GoogleAdMobManager;
 import com.example.book.R;
 import com.example.book.databinding.FragmentHomeBinding;
-import com.example.book.manager.CoinManager;
 import com.example.book.ui.Adapter.BookAdapter;
 import com.example.book.ui.Model.Post;
 import com.example.book.ui.bookdetail.BookDetailActivity;
-import com.example.customAdsPackage.GoogleAdMobManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +35,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HomeFragment extends Fragment {
 
@@ -76,8 +69,6 @@ public class HomeFragment extends Fragment {
         bookAdapter.setOnItemClickListener(new BookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                // Handle item click if needed
-                // For example, you can open the BookDetailActivity here
                 Post clickedBook = bookAdapter.getItem(position);
                 openBookDetailActivity(clickedBook);
             }
@@ -100,23 +91,27 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), GeneralBook.class);
             startActivity(intent);
         });
-        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                Log.d(TAG,"On Initialization Completed"+initializationStatus.toString());
-            }
-        });
-        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-
-            }
-        });
+//        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+//                Log.d(TAG,"On Initialization Completed"+initializationStatus.toString());
+//            }
+//        });
+//        MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+//            }
+//        });
         // Load the rewarded ad
         loadRewardedAd();
 
         // Show the rewarded ad when a button is clicked, for example
-        binding.getCoin.setOnClickListener(v -> showRewardedAd());
+        binding.getCoin.setOnClickListener(v -> GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), "ShowRewardedAd", Toast.LENGTH_SHORT).show();
+            }
+        }));
         // Fetch and display user's coin information
         fetchUserCoinsAndDisplay();
 
@@ -131,7 +126,6 @@ public class HomeFragment extends Fragment {
         intent.putExtra("description", book.getDescription());
         startActivity(intent);
     }
-
 
     private void loadRewardedAd() {
         AdRequest adRequest = new AdRequest.Builder().build();

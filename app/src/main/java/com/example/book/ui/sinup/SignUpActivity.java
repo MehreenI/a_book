@@ -19,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
-
     private FirebaseAuth firebaseAuth;
     private EditText user_name;
     private EditText etemail;
@@ -27,7 +26,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText phone;
     private EditText confirmPassword;
     private DatabaseReference databaseReference;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +50,6 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
-
-
 
     private void signUp() {
         String username = user_name.getText().toString();
@@ -90,4 +85,5 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(this, "Error creating user: " + (exception != null ? exception.getMessage() : ""), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }}
+    }
+}

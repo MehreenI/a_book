@@ -47,7 +47,6 @@ public class BookDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Get data from the intent
         Intent intent = getIntent();
 
         bookName = intent.getStringExtra("bookName");

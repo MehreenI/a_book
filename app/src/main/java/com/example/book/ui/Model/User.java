@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String Town;
     private String profileImg;
     private String phoneNumber;
+    private List<String> chatroomId;
     private List<String> favPostId;
 
     public User() {
@@ -27,6 +28,7 @@ public class User implements Serializable {
         this.Town = "";
         this.profileImg = "";
         this.phoneNumber = "";
+        this.chatroomId = new ArrayList<>();
         this.favPostId = new ArrayList<>();
     }
 
@@ -140,5 +142,11 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public List<String> getChatroomId() {
+        return chatroomId;
+    }
+    public void setChatroomId(List<String> chatroomId) {
+        this.chatroomId = chatroomId;
     }
 }

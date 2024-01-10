@@ -1,6 +1,8 @@
 package com.example.book.ui.signin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.manager.CoinFetchCallback;
+import com.example.book.ui.Model.User;
 import com.example.book.ui.sinup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +47,7 @@ public class loginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                login(etemail.getText().toString(), password.getText().toString());
             }
         });
 
@@ -57,9 +61,7 @@ public class loginActivity extends AppCompatActivity {
         });
     }
 
-    private void login() {
-        String email = etemail.getText().toString();
-        String userPassword = password.getText().toString();
+    private void login(String email, String userPassword) {
 
         if (email.isEmpty() || userPassword.isEmpty()) {
             Toast.makeText(this, "Email and password can't be blank", Toast.LENGTH_SHORT).show();
@@ -69,21 +71,25 @@ public class loginActivity extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(email, userPassword)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+
+                        AppController.getInstance().saveLoginPrefs(email,userPassword);
+
                         String userId = firebaseAuth.getCurrentUser().getUid();
                         String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
-
-                        // Fetch user's coins from Firebase or any other source
                         fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                             public void onCoinsFetched(int userCoins) {
-                                // Now you have the user's coins, you can proceed
                                 Toast.makeText(loginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                                // Create an intent to navigate to the MainActivity
                                 Intent intent = new Intent(loginActivity.this, MainActivity.class);
                                 intent.putExtra("userId", userId);
                                 intent.putExtra("userEmail", userEmail);
                                 intent.putExtra("userCoins", userCoins);
+                                User user = new User();
+                                user.setUsername(userId);
+                                user.setEmail(userEmail);
+                                user.setCoin(userCoins);
+                                AppController.getInstance().setUser(user);
 
                                 startActivity(intent);
                             }

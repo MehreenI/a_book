@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Book"
         tools:targetApi="31">
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">>
             <intent-filter>
@@ -49,6 +49,12 @@
             android:exported="false" />
         <activity
             android:name=".ui.home.AcademicBook"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MessageListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

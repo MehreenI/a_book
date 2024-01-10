@@ -1,4 +1,4 @@
-package com.example.customAdsPackage;
+package com.example.book;
 
 import android.app.Activity;
 import android.content.Context;
@@ -57,10 +57,21 @@ public class GoogleAdMobManager {
         Log.d(TAG, "Google Mobile Ads SDK Version: " + MobileAds.getVersion());
         MobileAds.initialize(context, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                Log.d(TAG,"On Initialization Completed"+initializationStatus.toString());
-                GoogleAdMobManager.getInstance().LoadRewardedAd();
-                GoogleAdMobManager.getInstance().LoadRewardedInterstitialAd();
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                isInitialized = true;
+                if(TESTING_MODE)
+                {
+                    REWARDED_ID = REWARDED_TEST_ID;
+                    REWARDED_INTERSTITIAL_ID = REWARDED_INTERSTITIAL_TEST_ID;
+                }
+                else
+                {
+                    REWARDED_ID = ADMOB_REWARDED_ID;
+                    REWARDED_INTERSTITIAL_ID = ADMOB_REWARDED_INTERSTITIAL_ID;
+                }
+                Log.d(TAG, "GoogleAdMobManager: Initialize:\nTESTING_MODE: " + TESTING_MODE);
+                LoadRewardedAd();
+                LoadRewardedInterstitialAd();
             }
         });
     }

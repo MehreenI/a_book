@@ -28,4 +28,10 @@
         android:name="com.example.book.ui.sellbook.SellFragment"
         android:label="Sell Book"
         tools:layout="@layout/fragment_sell" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.book.ui.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

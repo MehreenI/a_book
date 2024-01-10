@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.book"
-        minSdk = 24
+        minSdk = 22
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.firebaseui:firebase-ui-database:8.0.2")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

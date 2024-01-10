@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    
+    <LinearLayout
+        android:id="@+id/side_messageOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentTop="true"
+        android:paddingTop="2dp"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/bg_chatmessageother"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <TextView
+            android:id="@+id/txt_messageO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingHorizontal="8dp"
+            android:text="chat message"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_marginBottom="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_timeO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:text="19:00"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="6dp"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/side_messageYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentTop="true"
+        android:paddingTop="2dp"
+        android:background="@drawable/bg_chatmessage"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/txt_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingHorizontal="8dp"
+            android:text="chat message chat message chat message chat message chat message chat message chat message chat message chat message chat"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_marginBottom="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:text="19:00"
+                android:gravity="center_vertical"
+                android:layout_marginEnd="2dp"
+                android:layout_gravity="center_vertical"/>
+
+            <ImageView
+                android:id="@+id/img_sent"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_message_sent"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/img_delivered"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_message_delivered"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/img_seen"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_message_seen"
+                android:layout_marginEnd="6dp"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

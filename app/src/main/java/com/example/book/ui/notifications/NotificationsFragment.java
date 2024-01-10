@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.book.AppController;
 import com.example.book.R;
 import com.example.book.ui.Adapter.NotificationAdapter;
 import com.example.book.ui.Model.Bid;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +35,6 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-
         recyclerView = root.findViewById(R.id.recycler_view);
         notificationAdapter = new NotificationAdapter();
 
@@ -51,6 +52,7 @@ public class NotificationsFragment extends Fragment {
         if (firebaseAuth.getCurrentUser() != null) {
             // User is logged in
             String currentUserId = firebaseAuth.getCurrentUser().getUid();
+            currentUserId = AppController.getInstance().getUser().getUsername();
 
             DatabaseReference bidsRef = FirebaseDatabase.getInstance()
                     .getReference("users")

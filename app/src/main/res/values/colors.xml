@@ -16,6 +16,10 @@
     <color name="feature_post">#E09F3E</color>
     <color name="gray">#e2e3dd</color>
     <color name="red">#FA0000</color>
+    <color name="appcolor1">#5C0632</color>
+    <color name="appcolor2">#B75C0632</color>
+    <color name="appcolor3">#ffc107</color>
+    <color name="appcolortext">#E9E9E9</color>
 
 
 </resources>

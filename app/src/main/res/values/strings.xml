@@ -46,6 +46,7 @@
     <string name="Add_Post">Add Post</string>
     <string name="Add_fea_Post">Add Feature Post</string>
     <string name="sell">Sell</string>
+    <string name="profile">Profile</string>
     <string name="book">bookImage</string>
     <string name="fav">favourite</string>
     <string name="loc">Location</string>
@@ -68,4 +69,8 @@ Get more buyers by getting you ad ranked top using a featured post
 Enter Book Details
 </string>
     <string name="pakistan_largest_book_selling_platform">Pakistan largest book \nselling PlatForm</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="messages">Messages</string>
+    <string name="sendmessages">Send Message</string>
 </resources>

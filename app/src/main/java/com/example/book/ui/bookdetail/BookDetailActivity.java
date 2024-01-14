@@ -39,6 +39,7 @@ public class BookDetailActivity extends AppCompatActivity {
     String bookPrice;
     String sellerId;
     String bookName;
+    String postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,34 +47,30 @@ public class BookDetailActivity extends AppCompatActivity {
         binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
-
+        
         Intent intent = getIntent();
-
+        
+        postId = intent.getStringExtra("postId");
         bookName = intent.getStringExtra("bookName");
         bookPrice = intent.getStringExtra("bookPrice");
         String imageUrl = intent.getStringExtra("imageUrl");
         String description = intent.getStringExtra("description");
         ArrayList<String> authorsList = getIntent().getStringArrayListExtra("author");
         String condition = intent.getStringExtra("condition");
-        sellerId = intent.getStringExtra("sellerId"); // Assuming you have sellerId in the intent
-
-        // Set data to the views
+        sellerId = intent.getStringExtra("sellerId");
         binding.bookName.setText(bookName);
         binding.bookPrice.setText("Price: " + bookPrice + "/-");
         binding.description.setText(description);
 
-//        displaying Authors seperated by comma
         String authorsText = "";
         for (String author : authorsList) {
             authorsText += author + ", ";
         }
-        // Remove the trailing comma and space
         authorsText = authorsText.replaceAll(", $", "");
 
         binding.author.setText(authorsText);
         binding.condition.setText(condition);
 
-        // Load image using Picasso
         Picasso.get().load(imageUrl).into(binding.imageView);
 
         dialogue = new Dialog(this);
@@ -96,10 +93,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
     private void showOfferedDialogue() {
         dialogue.setContentView(R.layout.activity_dialogue_offer);
-
         Button offerButton = dialogue.findViewById(R.id.bid_offer);
-
-        // Move the EditText initialization inside the method
         EditText bidAmountEditText = dialogue.findViewById(R.id.editTextNumber);
 
         offerButton.setOnClickListener(new View.OnClickListener() {
@@ -190,10 +184,8 @@ public class BookDetailActivity extends AppCompatActivity {
     }
 
     private void sendBidRequest(int bidAmount, String sellerId) {
-        // Get the user's ID from Firebase Auth
         String bidderId = firebaseAuth.getCurrentUser().getUid();
 
-        // Create a new Bid object
         Bid bid = new Bid();
         bid.setBidderId(bidderId);
         bid.setAmount(bidAmount);
@@ -203,19 +195,17 @@ public class BookDetailActivity extends AppCompatActivity {
 
         bid.setOriginalPrice(Integer.parseInt(bookPrice));
 
-        // Reference to the bids node in Firebase
         DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
 
-        // Push the bid to Firebase
         String bidId = bidsRef.push().getKey();
         bid.setBidId(bidId);
         bidsRef.child(bidId).setValue(bid);
 
-        // Notify the seller about the bid with additional details
         DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids_Notification").child(bidId);
         sellerBidsRef.child("bidderId").setValue(bidderId);
         sellerBidsRef.child("orignalPrice").setValue(bookPrice);
         sellerBidsRef.child("bookName").setValue(bookName);
+        sellerBidsRef.child("postId").setValue(postId);
         sellerBidsRef.child("amount").setValue(bidAmount);
         sellerBidsRef.child("timestamp").setValue(System.currentTimeMillis());
     }

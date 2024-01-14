@@ -5,6 +5,7 @@ import com.example.book.ui.extra.Enums;
 import java.util.List;
 
 public class Post {
+    private String postId;
     private String bookName;
     private String bookPrice;
     private String imageUrl;
@@ -33,7 +34,8 @@ public class Post {
         // Default constructor required for calls to DataSnapshot.getValue(ImageUpload.class)
     }
 
-    public Post(String bookName, String bookPrice, String imageUrl, List<String> authors, String description, String condition, String uploadDate, Enums.BookCategory bookCategory,String userId, Enums.PostType post_type) {
+    public Post(String postId, String bookName, String bookPrice, String imageUrl, List<String> authors, String description, String condition, String uploadDate, Enums.BookCategory bookCategory,String userId, Enums.PostType post_type) {
+        this.postId = postId;
         this.userId = userId;
         this.bookName = bookName;
         this.bookPrice = bookPrice;
@@ -41,11 +43,19 @@ public class Post {
         this.authors = authors;
         this.description = description;
         this.condition = condition;
-        this.uploadDate = uploadDate; // Set the upload date to the current date
+        this.uploadDate = uploadDate;
         this.bookCategory = bookCategory;
         this.postType = post_type;
     }
-
+    
+    public String getPostId() {
+        return postId;
+    }
+    
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+    
     public String getBookName() {
         return bookName;
     }

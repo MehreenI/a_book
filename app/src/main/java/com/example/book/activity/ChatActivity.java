@@ -50,6 +50,9 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             chatRoomId = intent.getStringExtra("ChatRoomId");
+            if(chatRoomId == null){
+                chatRoomId = chatRoom.getChatroomId();
+            }
         }
         Log.d("ChatActivity", "onCreate: chatRoomId " + chatRoomId);
         FirebaseRecyclerOptions<ChatMessage> options =

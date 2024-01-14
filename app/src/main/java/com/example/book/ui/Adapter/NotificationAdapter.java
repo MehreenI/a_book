@@ -103,7 +103,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Toast.makeText(context, "Conversation Start", Toast.LENGTH_SHORT).show();
-                    //AppController.getInstance().getManager(FirebaseManager.class).isChatRoomCreated(, notification.getBidderId());
+                    String postId;
+                    if (notification.getPostId() == null){
+                        postId = "dummyPost";
+                    }else{
+                        postId = notification.getPostId();
+                    }
+                    AppController.getInstance().getManager(FirebaseManager.class).isChatRoomCreated(postId, notification.getBidderId());
                 }
             });
 

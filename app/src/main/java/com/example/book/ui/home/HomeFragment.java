@@ -57,6 +57,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        
+        binding.searchView.clearFocus();
 
         // Set up RecyclerView
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);

@@ -128,7 +128,7 @@ public class SellViewModel extends ViewModel {
             DatabaseReference postReference = mDataBaseReference.child(uploadId);
 
             // Create the Post object
-            Post upload = new Post(bookName, bookPrice, downloadUrl, authors, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
+            Post upload = new Post(uploadId, bookName, bookPrice, downloadUrl, authors, description, oldNewCondition, uploadDate, selectedBookCategory, userId, postType);
 
             // Set the value of the post in the database
             postReference.setValue(upload);

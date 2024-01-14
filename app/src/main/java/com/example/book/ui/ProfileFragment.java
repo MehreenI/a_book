@@ -41,25 +41,24 @@ public class ProfileFragment extends Fragment {
                 String message = "Hello";
                 bundle.putString("KEY_MESSAGE", message);
                 intent.putExtras(bundle);
-
                 startActivity(intent);
             }
         });
-        fragBinding.btnSendMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("Message Button Pressed");
-                AppController.getInstance().getManager(FirebaseManager.class).isChatRoomCreated("dummyPost", "dummyBidder");
-
-//                Intent intent = new Intent(getActivity(), ChatActivity.class);
-//                Bundle bundle = new Bundle();
-//                String message = "Hello";
-//                bundle.putString("KEY_MESSAGE", message);
-//                intent.putExtras(bundle);
-
-//                startActivity(intent);
-            }
-        });
+//        fragBinding.btnSendMessage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                System.out.println("Message Button Pressed");
+//                AppController.getInstance().getManager(FirebaseManager.class).isChatRoomCreated("dummyPost", "dummyBidder");
+//
+////                Intent intent = new Intent(getActivity(), ChatActivity.class);
+////                Bundle bundle = new Bundle();
+////                String message = "Hello";
+////                bundle.putString("KEY_MESSAGE", message);
+////                intent.putExtras(bundle);
+//
+////                startActivity(intent);
+//            }
+//        });
 
         return fragBinding.getRoot();
     }

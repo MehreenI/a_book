@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.manager.CoinFetchCallback;
+import com.example.book.manager.UserManager;
 import com.example.book.ui.Model.User;
 import com.example.book.ui.sinup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -89,6 +90,8 @@ public class loginActivity extends AppCompatActivity {
                                 user.setUsername(userId);
                                 user.setEmail(userEmail);
                                 user.setCoin(userCoins);
+    
+                                AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(user);
                                 AppController.getInstance().setUser(user);
 
                                 startActivity(intent);

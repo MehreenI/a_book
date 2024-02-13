@@ -102,4 +102,9 @@ public class Post {
     public void setAuthors(List<String> authors) {
         this.authors = authors;
     }
+    
+    public boolean isFeatured() {
+        return postType == Enums.PostType.FEATURED;
+    }
+    
 }

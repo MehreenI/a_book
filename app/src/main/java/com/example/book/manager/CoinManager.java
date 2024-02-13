@@ -31,7 +31,8 @@ public class CoinManager extends Manager {
 
     public void Initialize() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = currentUser.getUid();
+        Log.d(TAG, "Initialize: currentUser: " + currentUser);
+         String userId = currentUser.getUid();
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
 

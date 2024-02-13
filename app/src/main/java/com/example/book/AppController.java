@@ -63,11 +63,11 @@ public class AppController {
 
     //region Initialization
     private AppController() {
-        addManager(FirebaseManager.class, new FirebaseManager());
-        addManager(CoinManager.class, new CoinManager());
-        addManager(UserManager.class, new UserManager());
     }
     public void initialize() {
+        addManager(FirebaseManager.class, new FirebaseManager());
+        addManager(UserManager.class, new UserManager());
+        addManager(CoinManager.class, new CoinManager());
         getManager(UserManager.class).Initialize();
         getManager(FirebaseManager.class).Initialize();
 

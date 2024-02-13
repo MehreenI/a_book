@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-    <value>
-      <entry key="MainActivity">
-        <State />
-      </entry>
-      <entry key="SplashScreen">
-        <State />
-      </entry>
-      <entry key="app">
-        <State />
-      </entry>
-    </value>
+    <runningDeviceTargetSelectedWithDropDown>
+      <Target>
+        <type value="RUNNING_DEVICE_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="SERIAL_NUMBER" />
+            <value value="B2NGAA8882808786" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </runningDeviceTargetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2024-02-13T14:54:47.112300800Z" />
   </component>
 </project>

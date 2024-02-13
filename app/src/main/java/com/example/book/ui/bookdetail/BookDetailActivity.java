@@ -63,8 +63,10 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.description.setText(description);
 
         String authorsText = "";
-        for (String author : authorsList) {
-            authorsText += author + ", ";
+        if(authorsList!=null){
+            for (String author : authorsList) {
+                authorsText += author + ", ";
+            }
         }
         authorsText = authorsText.replaceAll(", $", "");
 

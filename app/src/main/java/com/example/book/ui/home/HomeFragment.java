@@ -22,10 +22,6 @@ import com.example.book.databinding.FragmentHomeBinding;
 import com.example.book.ui.Adapter.BookAdapter;
 import com.example.book.ui.Model.Post;
 import com.example.book.ui.bookdetail.BookDetailActivity;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +39,6 @@ public class HomeFragment extends Fragment {
     private Activity activity;
     private final String TAG = "HomeFragment";
     private Runnable addCoinsCallback;
-    private RewardedAd mRewarded;
-    private RewardedAd rewardedAd;
 
 
     @Override
@@ -105,7 +99,6 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
         // Load the rewarded ad
-        loadRewardedAd();
 
         // Show the rewarded ad when a button is clicked, for example
         binding.getCoin.setOnClickListener(v -> GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), new Runnable() {
@@ -129,36 +122,6 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void loadRewardedAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        RewardedAd.load(getActivity(), "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull RewardedAd ad) {
-                rewardedAd = ad;
-                Toast.makeText(getActivity(), "Rewarded ad loaded successfully", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                Toast.makeText(getActivity(), "Rewarded ad failed to load", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showRewardedAd() {
-        if (rewardedAd != null) {
-            rewardedAd.show(getActivity(), rewardItem -> {
-                // User earned reward, handle accordingly
-                int rewardAmount = rewardItem.getAmount();
-                String rewardType = rewardItem.getType();
-                Toast.makeText(getActivity(), "Earned " + rewardAmount + " " + rewardType, Toast.LENGTH_SHORT).show();
-                loadRewardedAd();
-            });
-        } else {
-            Toast.makeText(getActivity(), "Rewarded ad not loaded yet", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void fetchUserCoinsAndDisplay() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();

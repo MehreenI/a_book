@@ -119,7 +119,14 @@ public class FirebaseManager extends Manager {
                                     @Override
                                     public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            openExistingChatRoom(chatRoom);
+                                            DBUserPath.child(bidderId).child("chatroomId").setValue(chatroomIds).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()){
+                                                        openExistingChatRoom(chatRoom);
+                                                    }
+                                                }
+                                            });
                                         }
                                     }
                                 });

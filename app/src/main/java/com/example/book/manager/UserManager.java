@@ -48,6 +48,7 @@ public class UserManager extends Manager {
 
         setUser(_loggedUser);
         Initialize();
+        AppController.getInstance().LoadChatRooms();
     }
     public void setUser(String username, final FirebaseManager.OnUserFetchListener listener) {
         Log.d(TAG, "setUser: username " + username);

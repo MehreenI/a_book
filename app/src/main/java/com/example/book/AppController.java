@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,9 +38,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class AppController {
 
@@ -57,7 +60,7 @@ public class AppController {
     private ChatRoom chatRoom;
     private User user;
     private List<String> chatroomIds = new ArrayList<>();
-    private List<ChatRoom> chatRooms = new ArrayList<>();
+    private Set<ChatRoom> chatRooms = new HashSet<>();
     private Activity currentActivity;
     //endregion Attributes
 
@@ -70,8 +73,13 @@ public class AppController {
         addManager(CoinManager.class, new CoinManager());
         getManager(UserManager.class).Initialize();
         getManager(FirebaseManager.class).Initialize();
-
-        AppController.getInstance().LoadChatRooms();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("loadLoginPrefs", "Starting LoadChatRooms: ");
+                AppController.getInstance().LoadChatRooms();
+            }
+        }, 3000);
     }
     //endregion Initialization
     private Map<Class<?>, Manager> managerMap = new HashMap<>();
@@ -141,16 +149,19 @@ public class AppController {
     }
 
     public void FillChatRoomsList(){
+        chatRooms.clear();
         for (String chatRoomId : chatroomIds) {
             getManager(FirebaseManager.class).showChatRoom(chatRoomId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@androidx.annotation.NonNull Task<DataSnapshot> task) {
-                    Log.d(TAG, "MessageListAdapter: chatRoomIds 3 " + task.getResult().getValue() + " ");
+                    Log.d(TAG, "MessageListAdapter: chatRoomIds " + task.getResult().getValue() + " ");
                     if(task.isSuccessful()){
                         ChatRoom chatRoom = fromDataSnapshot(task.getResult());
                         if (chatRoom != null) {
-                            chatRooms.add(chatRoom);
-                            Log.d(TAG, "MessageListAdapter: task.getResult() " + chatRoom + " " + task.getResult());
+                            if (!chatRooms.contains(chatRoom)){
+                                chatRooms.add(chatRoom);
+                                Log.d(TAG, "MessageListAdapter: task.getResult() " + chatRoom + " " + task.getResult());
+                            }
                             System.out.println(chatRoom);
                         } else {
                             System.out.println("DataSnapshot does not exist or is invalid.");
@@ -163,6 +174,7 @@ public class AppController {
         }
     }
     public void LoadChatRooms(){
+        chatroomIds.clear();
         try {
             String username = AppController.getInstance().getManager(UserManager.class).getUser().getUsername();
             Log.d(TAG, "LoadChatRooms: username: " + username);
@@ -172,7 +184,10 @@ public class AppController {
                     if(task.isSuccessful()){
                         Log.d(TAG, "onCreate: task LoadChatRooms " + task.getResult());
                         for (DataSnapshot chatRoomSnapshot : task.getResult().getChildren()) {
-                            chatroomIds.add(chatRoomSnapshot.getValue().toString());
+                            if (!chatroomIds.contains(chatRoomSnapshot.getValue().toString())){
+                                chatroomIds.add(chatRoomSnapshot.getValue().toString());
+                                Log.d(TAG, "LoadChatRooms: adding chatroom " + chatroomIds + " " + task.getResult());
+                            }
                         }
                         FillChatRoomsList();
                     }
@@ -257,7 +272,7 @@ public class AppController {
                             Log.d("loadLoginPrefs", "loadLoginPrefs: 3");
                             AppController.getInstance().saveLoginPrefs(email,userPassword);
                             String userId = firebaseAuth.getCurrentUser().getUid();
-
+                            Log.d("loadLoginPrefs", "loadLoginPrefs: 3" + userId);
                             fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                                 public void onCoinsFetched(int userCoins) {
 
@@ -317,10 +332,10 @@ public class AppController {
     public void setChatRoom(ChatRoom chatRoom) {
         this.chatRoom = chatRoom;
     }
-    public List<ChatRoom> getChatRooms() {
+    public Set<ChatRoom> getChatRooms() {
         return chatRooms;
     }
-    public void setChatRooms(List<ChatRoom> chatRooms) {
+    public void setChatRooms(Set<ChatRoom> chatRooms) {
         this.chatRooms = chatRooms;
     }
     public List<String> getChatroomIds() {

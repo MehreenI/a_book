@@ -3,10 +3,12 @@ package com.example.book;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -37,6 +39,7 @@ public class SplashScreen extends AppCompatActivity {
         actBinding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(actBinding.getRoot());
         activity = this;
+        clearAllPreferences(this);
         AppController.getInstance().setCurrentActivity(activity);
 
         Log.d(TAG, "activity: " + activity);
@@ -68,7 +71,13 @@ public class SplashScreen extends AppCompatActivity {
         animScaleUp(actBinding.splashAppname, 200, 200, false);
         animScaleUp(actBinding.splashApptagline, 200, 400, false);
     }
-
+    
+    public void clearAllPreferences(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
     //region Methods
 
     public void ChangeActivity(){

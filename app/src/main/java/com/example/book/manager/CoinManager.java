@@ -46,7 +46,7 @@ public class CoinManager extends Manager {
                     totalCoins = 5;
                     Log.e(TAG, "totalCoins: " + totalCoins);
                     // If the "coin" node doesn't exist in the database, you can create it here.
-                    databaseReference.setValue(totalCoins);
+//                    databaseReference.setValue(totalCoins);
                 }
                 setInitialized(true);
             }

@@ -112,7 +112,7 @@ public class FirebaseManager extends Manager {
                             if(task.isSuccessful()){
                                 List<String> chatroomIds = new ArrayList<>();
                                 for (DataSnapshot chatRoomSnapshot : task.getResult().getChildren()) {
-                                    chatroomIds.add(chatRoomSnapshot.toString());
+                                    chatroomIds.add(chatRoomSnapshot.getValue().toString());
                                 }
                                 chatroomIds.add(chatRoomId);
                                 DBUserPath.child(username).child("chatroomId").setValue(chatroomIds).addOnCompleteListener(new OnCompleteListener<Void>() {

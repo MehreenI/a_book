@@ -57,6 +57,9 @@
 
         </LinearLayout>
 
+
+
+
         <Button
             android:id="@+id/getreward"
             android:layout_width="wrap_content"
@@ -70,6 +73,7 @@
     </LinearLayout>
 
     <Button
+
         android:id="@+id/getCoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -163,6 +167,8 @@
         android:textAppearance="@color/theme"
         app:queryHint="Search Books/Authors"/>
 
+
+
     <TextView
         android:id="@+id/popular_now"
         android:layout_width="wrap_content"
@@ -181,7 +187,7 @@
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/featured_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -191,6 +197,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popular_now"
-        tools:listitem="@layout/activity_book_list" />
+        tools:listitem="@layout/activity_featured_book_list" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

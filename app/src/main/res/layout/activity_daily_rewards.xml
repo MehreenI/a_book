@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.awards.DailyRewards">
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 1"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 2"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 3"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 4"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 5"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 6"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 7"
+        android:backgroundTint="@android:color/darker_gray"
+        android:onClick="onButtonClick"
+        android:enabled="false"/>
+
+
+    <!-- Repeat similar button elements for button2 to button7 -->
+
+    <Button
+        android:id="@+id/claimButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Claim Daily Reward"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:onClick="onClaimButtonClick"
+        />
+</LinearLayout>

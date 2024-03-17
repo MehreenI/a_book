@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ import java.util.List;
 public class SellFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private SellViewModel sellViewModel;
+    private ProgressBar progressBar;
+
     private FragmentSellBinding binding;
     private static final int GALLERY_REQUEST_CODE = 1000;
     private ImageButton imgGallery;
@@ -52,12 +55,15 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         binding = FragmentSellBinding.inflate(inflater, container, false);
         sellViewModel = new ViewModelProvider(this).get(SellViewModel.class);
         setupRadioGroup();
         imgGallery = binding.imageButton;
         authorList = binding.authorsContainer;
         addAuthor = binding.addMoreAuthor;
+        progressBar = binding.progressBar;
+
         authors = new ArrayList<>();
 
         sellViewModel.getFeaturedPostConfirmation().observe(getViewLifecycleOwner(), isConfirmed -> {
@@ -95,6 +101,9 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sellViewModel = new ViewModelProvider(this).get(SellViewModel.class);
+        sellViewModel = new ViewModelProvider(this).get(SellViewModel.class);
+        sellViewModel.setProgressBar(progressBar);
+
         setupSpinner();
 
         binding.imageButton.setOnClickListener(v -> pickImageFromGallery());
@@ -198,8 +207,6 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
             }
 
             sellViewModel.uploadPost(requireActivity(), bookName, bookPrice, authors, description, condition, imageUri);
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
             clearFields();
         } else {
             Toast.makeText(requireContext(), "Error uploading post", Toast.LENGTH_SHORT).show();

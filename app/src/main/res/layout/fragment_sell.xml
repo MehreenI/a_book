@@ -41,27 +41,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <!-- TextView Heading -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/upload_image"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@color/theme"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:text="@string/upload_image"
+                android:textColor="@color/theme"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <!-- Use a horizontal LinearLayout to position the ImageButton and ImageView -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
                 android:gravity="center_horizontal"
-                android:layout_marginTop="16dp">
+                android:orientation="horizontal">
 
                 <!-- ImageButton for Image Selection -->
 
@@ -99,8 +98,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
 
             <!-- Text View Heading -->
@@ -147,8 +145,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -188,15 +185,13 @@
             </LinearLayout>
 
 
-
             <View
                 android:id="@+id/viewseparator4"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="16dp"
-                android:background="@color/gray"
-                />
+                android:background="@color/gray" />
 
             <EditText
                 android:id="@+id/bookNameEditText"
@@ -242,15 +237,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical"
-                android:textAllCaps="false"
-                android:textSize="13sp"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/theme"
-                android:drawableEnd="@drawable/add_24"
-                android:shadowColor="@color/white"
                 android:backgroundTint="@color/white"
-                android:text="@string/add_more_authors"/>
+                android:drawableEnd="@drawable/add_24"
+                android:gravity="center_vertical"
+                android:shadowColor="@color/white"
+                android:text="@string/add_more_authors"
+                android:textAllCaps="false"
+                android:textColor="@color/theme"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/DescriptionEditText"
@@ -269,8 +264,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_marginVertical="10dp">
+                android:layout_marginVertical="10dp"
+                android:gravity="center_vertical|center_horizontal">
+
                 <TextView
                     android:id="@+id/tvheading5"
                     android:layout_width="wrap_content"
@@ -299,9 +295,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/theme"
-                android:layout_marginTop="10dp"
                 android:paddingLeft="38dp"
                 android:paddingRight="38dp"
                 android:text="@string/Add_Post"
@@ -313,11 +309,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal"                android:text="WANT TO SELL FASTER?"
+                android:text="WANT TO SELL FASTER?"
                 android:textColor="@color/theme"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/get_more_bu"
@@ -338,16 +334,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/feature_post"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="28dp"
-                android:paddingRight="28dp"
                 android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/feature_post"
+                android:paddingLeft="28dp"
+                android:paddingTop="8dp"
+                android:paddingRight="28dp"
+                android:paddingBottom="8dp"
                 android:text="@string/Add_fea_Post"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 

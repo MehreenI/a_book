@@ -12,6 +12,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.book.MainActivity;
 import com.example.book.R;
 import com.example.book.AppController;
 import com.example.book.manager.CoinFetchCallback;
@@ -50,6 +52,7 @@ public class SellViewModel extends ViewModel {
     private Uri imageUri;
     private Enums.BookCategory selectedBookCategory;
 
+    private ProgressBar progressBar;
 
     private Enums.PostType postType;
 
@@ -83,6 +86,7 @@ public class SellViewModel extends ViewModel {
     public void uploadPost(Activity activity, String bookName, String bookPrice, List<String> authors, String description, String condition, Uri imageUri) {
 
         if (firebaseAuth.getCurrentUser() != null) {
+            progressBar.setVisibility(View.VISIBLE);
             if (imageUri != null) {
                 StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri, activity));
 
@@ -97,7 +101,7 @@ public class SellViewModel extends ViewModel {
 
                                 String userId = firebaseAuth.getCurrentUser().getUid();
 
-                                
+
                                 if (!bookName.isEmpty() && !bookPrice.isEmpty() && !authors.isEmpty() && !description.isEmpty() && !uploadDate.isEmpty()) {
                                     post(activity, userId, uploadDate, bookName, bookPrice, authors, oldNewCondition, description, downloadUrl);
                                 } else {
@@ -132,6 +136,9 @@ public class SellViewModel extends ViewModel {
 
             // Set the value of the post in the database
             postReference.setValue(upload);
+            progressBar.setVisibility(View.GONE);
+            Intent intent = new Intent(activity, MainActivity.class);
+            activity.startActivity(intent);
 
             Toast.makeText(activity, "Post Added Successfully", Toast.LENGTH_SHORT).show();
         } else {
@@ -154,6 +161,10 @@ public class SellViewModel extends ViewModel {
     public void setPostType(Enums.PostType postType) {
         this.postType = postType;
     }
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
 
     @Override
     protected void onCleared() {

@@ -41,38 +41,51 @@ public class BookDetailActivity extends AppCompatActivity {
     String bookName;
     String postId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
-        
+
+        // Get data from the intent
         Intent intent = getIntent();
-        
         postId = intent.getStringExtra("postId");
+
+
         bookName = intent.getStringExtra("bookName");
         bookPrice = intent.getStringExtra("bookPrice");
         String imageUrl = intent.getStringExtra("imageUrl");
         String description = intent.getStringExtra("description");
         ArrayList<String> authorsList = getIntent().getStringArrayListExtra("author");
         String condition = intent.getStringExtra("condition");
-        sellerId = intent.getStringExtra("sellerId");
+        sellerId = intent.getStringExtra("sellerId"); // Assuming you have sellerId in the intent
+
+        // Set data to the views
         binding.bookName.setText(bookName);
         binding.bookPrice.setText("Price: " + bookPrice + "/-");
         binding.description.setText(description);
 
-        String authorsText = "";
-        if(authorsList!=null){
+        // Check if authorsList is not null before processing
+        if (authorsList != null) {
+            // displaying Authors separated by comma
+            String authorsText = "";
             for (String author : authorsList) {
                 authorsText += author + ", ";
             }
-        }
-        authorsText = authorsText.replaceAll(", $", "");
+            // Remove the trailing comma and space
+            authorsText = authorsText.replaceAll(", $", "");
 
-        binding.author.setText(authorsText);
+            binding.author.setText(authorsText);
+        } else {
+            // Handle the case where authorsList is null or empty
+            binding.author.setText("Authors not available");
+        }
+
         binding.condition.setText(condition);
 
+        // Load image using Picasso
         Picasso.get().load(imageUrl).into(binding.imageView);
 
         dialogue = new Dialog(this);
@@ -95,7 +108,10 @@ public class BookDetailActivity extends AppCompatActivity {
 
     private void showOfferedDialogue() {
         dialogue.setContentView(R.layout.activity_dialogue_offer);
+
         Button offerButton = dialogue.findViewById(R.id.bid_offer);
+
+        // Move the EditText initialization inside the method
         EditText bidAmountEditText = dialogue.findViewById(R.id.editTextNumber);
 
         offerButton.setOnClickListener(new View.OnClickListener() {
@@ -186,8 +202,10 @@ public class BookDetailActivity extends AppCompatActivity {
     }
 
     private void sendBidRequest(int bidAmount, String sellerId) {
+        // Get the user's ID from Firebase Auth
         String bidderId = firebaseAuth.getCurrentUser().getUid();
 
+        // Create a new Bid object
         Bid bid = new Bid();
         bid.setBidderId(bidderId);
         bid.setAmount(bidAmount);
@@ -197,12 +215,15 @@ public class BookDetailActivity extends AppCompatActivity {
 
         bid.setOriginalPrice(Integer.parseInt(bookPrice));
 
+        // Reference to the bids node in Firebase
         DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
 
+        // Push the bid to Firebase
         String bidId = bidsRef.push().getKey();
         bid.setBidId(bidId);
         bidsRef.child(bidId).setValue(bid);
 
+        // Notify the seller about the bid with additional details
         DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids_Notification").child(bidId);
         sellerBidsRef.child("bidderId").setValue(bidderId);
         sellerBidsRef.child("orignalPrice").setValue(bookPrice);
@@ -234,13 +255,19 @@ public class BookDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // Get the current coin balance
-                    int currentCoins = dataSnapshot.getValue(Integer.class);
+                    Integer currentCoins = dataSnapshot.getValue(Integer.class);
 
-                    // Deduct the coins
-                    int newCoinsBalance = currentCoins - coinsToDeduct;
+                    if (currentCoins != null) {
+                        // Deduct the coins
+                        int newCoinsBalance = currentCoins - coinsToDeduct;
 
-                    // Update the user's coin balance in Firebase
-                    userCoinsRef.setValue(newCoinsBalance);
+                        // Update the user's coin balance in Firebase
+                        userCoinsRef.setValue(newCoinsBalance);
+                    } else {
+                        Log.e("CoinDeduction", "Current coins value is null");
+                    }
+                } else {
+                    Log.e("CoinDeduction", "Data snapshot does not exist");
                 }
             }
 

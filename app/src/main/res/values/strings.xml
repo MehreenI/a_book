@@ -73,4 +73,7 @@ Enter Book Details
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="messages">Messages</string>
     <string name="sendmessages">Send Message</string>
+    <string name="rewarded_ad_unit_id">1</string>
+    <string name="favourite_books">Favourite Books</string>
+    <string name="log_out">Log Out</string>
 </resources>

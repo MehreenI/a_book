@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment {
     private void loadDataFromFirebase() {
         DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference("uploads");
 
-        postsRef.orderByChild("postType").equalTo(Enums.PostType.FEATURED.toString())
+        postsRef.orderByChild("timestamp")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

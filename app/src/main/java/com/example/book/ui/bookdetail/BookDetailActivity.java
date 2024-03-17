@@ -114,41 +114,57 @@ public class BookDetailActivity extends AppCompatActivity {
         // Move the EditText initialization inside the method
         EditText bidAmountEditText = dialogue.findViewById(R.id.editTextNumber);
 
+        // Calculate 50% of the original book price
+        double fiftyPercentOfBookPrice = Double.parseDouble(bookPrice) * 0.5;
+
         offerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the text when the button is clicked
-                String bidAmount = bidAmountEditText.getText().toString();
+                String bidAmountString = bidAmountEditText.getText().toString();
 
-                CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
-                coinManager.getTotalCoins(new CoinFetchCallback() {
-                    @Override
-                    public void onCoinsFetched(int totalCoins) {
-                        if (totalCoins >= 5) {
-                            // Deduct coins in Firebase
-                            deductCoinsFromFirebase(5);
+                if (!bidAmountString.isEmpty()) {
+                    double bidAmount = Double.parseDouble(bidAmountString);
 
-                            // Create and send bid request
-                            sendBidRequest(Integer.parseInt(bidAmount), sellerId);
+                    if (bidAmount >= fiftyPercentOfBookPrice) {
+                        CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+                        coinManager.getTotalCoins(new CoinFetchCallback() {
+                            @Override
+                            public void onCoinsFetched(int totalCoins) {
+                                if (totalCoins >= 5) {
+                                    // Deduct coins in Firebase
+                                    deductCoinsFromFirebase(5);
 
-                            Toast.makeText(BookDetailActivity.this, "You are interested! Coins deducted: 5", Toast.LENGTH_SHORT).show();
+                                    // Create and send bid request
+                                    sendBidRequest((int) bidAmount, sellerId);
 
-                            // Close the dialog when the "OK" button is clicked
-                            dialogue.dismiss();
+                                    Toast.makeText(BookDetailActivity.this, "You are interested! Coins deducted: 5", Toast.LENGTH_SHORT).show();
 
-                            // Delay starting MainActivity by 1 second so that updated coins are loaded
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                                    // Close the dialog when the "OK" button is clicked
+                                    dialogue.dismiss();
+
+                                    // Delay starting MainActivity by 1 second so that updated coins are loaded
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }, 1000); // 1000 milliseconds = 1 second
+                                } else {
+                                    Toast.makeText(BookDetailActivity.this, "Not enough coins. Please earn more coins.", Toast.LENGTH_SHORT).show();
                                 }
-                            }, 1000); // 1000 milliseconds = 1 second
-                        } else {
-                            Toast.makeText(BookDetailActivity.this, "Not enough coins. Please earn more coins.", Toast.LENGTH_SHORT).show();
-                        }
+                            }
+                        });
+                    } else {
+                        // User entered amount less than 50%, show toast or adjust amount
+                        double adjustedAmount = fiftyPercentOfBookPrice + 1; // Minimum amount as 50% + 1
+                        bidAmountEditText.setText(String.valueOf(adjustedAmount));
+                        Toast.makeText(BookDetailActivity.this, "You must offer at least 50% of the original price.", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } else {
+                    Toast.makeText(BookDetailActivity.this, "Please enter an amount.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -75,7 +75,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Post clickedBook = bookAdapter.getItem(position);
-                openBookDetailActivity(clickedBook);
             }
 
             @Override

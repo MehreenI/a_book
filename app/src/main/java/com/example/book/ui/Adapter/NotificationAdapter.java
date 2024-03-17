@@ -114,9 +114,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             });
 
             builder.setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
+                String id;
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    id = notification.getSellerId();
                     Toast.makeText(context, "Decline offer", Toast.LENGTH_SHORT).show();
+
+
                 }
             });
 

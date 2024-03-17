@@ -235,8 +235,9 @@ public class BookDetailActivity extends AppCompatActivity {
         DatabaseReference bidsRef = FirebaseDatabase.getInstance().getReference("bids");
 
         // Push the bid to Firebase
-        String bidId = bidsRef.push().getKey();
-        bid.setBidId(bidId);
+        String bidId = bidsRef.push().getKey(); // Generate a unique key
+        bid.setBidId(bidId); // Set the bidId
+
         bidsRef.child(bidId).setValue(bid);
 
         // Notify the seller about the bid with additional details

@@ -30,7 +30,6 @@ public class NotificationsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NotificationAdapter notificationAdapter;
-    FirebaseAuth sellerId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +38,7 @@ public class NotificationsFragment extends Fragment {
         notificationAdapter = new NotificationAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
         recyclerView.setAdapter(notificationAdapter);
 
         // Load and set your notification data from Firebase
@@ -50,10 +50,7 @@ public class NotificationsFragment extends Fragment {
     private void getNotificationData() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
-            // User is logged in
             String currentUserId = firebaseAuth.getCurrentUser().getUid();
-            currentUserId = AppController.getInstance().getUser().getUsername();
-
             DatabaseReference bidsRef = FirebaseDatabase.getInstance()
                     .getReference("users")
                     .child(currentUserId)
@@ -65,22 +62,25 @@ public class NotificationsFragment extends Fragment {
                     List<Bid> notificationList = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Bid bid = snapshot.getValue(Bid.class);
-                        notificationList.add(bid);
+                        if (bid != null) {
+                            // Set the bidId from the snapshot key
+                            bid.setBidId(snapshot.getKey());
+                            notificationList.add(bid);
+                        }
                     }
-
                     // Reverse the list to show the latest bids at the top
-                    List<Bid> reversedList = new ArrayList<>(notificationList);
-                    Collections.reverse(reversedList);
-
-                    notificationAdapter.setNotificationList(reversedList);
+                    Collections.reverse(notificationList);
+                    notificationAdapter.setNotificationList(notificationList);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle the error
+                    // Handle error
                 }
             });
-        } else {
+        }
+
+ else {
             // User is not logged in, or there are no notifications
             List<Bid> emptyList = Collections.emptyList();
             notificationAdapter.setNotificationList(emptyList);

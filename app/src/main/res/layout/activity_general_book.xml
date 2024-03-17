@@ -31,6 +31,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView4"/>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchViewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintTop_toBottomOf="@id/textView3"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/search_bg"
+        android:textAppearance="@color/theme"
+        app:queryHint="Search Books/Authors"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -41,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewGeneral"
         tools:listitem="@layout/activity_book_list" />
 
 

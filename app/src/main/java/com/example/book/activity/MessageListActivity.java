@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.book.AppController;
 import com.example.book.adapter.MessageListAdapter;
 import com.example.book.databinding.ActivityMessageListBinding;
+import com.example.book.manager.UserManager;
 import com.example.book.ui.Model.ChatRoom;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class MessageListActivity extends AppCompatActivity {
         chatRooms.addAll(AppController.getInstance().getChatRooms());
         Log.d(TAG, "username: " + username);
         Log.d(TAG, "chatRooms: " + chatRooms);
+    
         messageListAdapter = new MessageListAdapter(this, username, chatRooms);
         actBinding.recChat.setLayoutManager(new LinearLayoutManager(this));
         actBinding.recChat.setAdapter(messageListAdapter);

@@ -39,10 +39,12 @@ public class SplashScreen extends AppCompatActivity {
         actBinding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(actBinding.getRoot());
         activity = this;
-        clearAllPreferences(this);
+//        clearAllPreferences(this);
         AppController.getInstance().setCurrentActivity(activity);
 
         Log.d(TAG, "activity: " + activity);
+    
+        AppController.getInstance().initialize();
         GoogleAdMobManager.getInstance().Initialize(activity);
         if(AppController.getInstance().loadLoginPrefs()){
             new Handler().postDelayed(new Runnable() {

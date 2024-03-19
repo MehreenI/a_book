@@ -15,6 +15,7 @@ import com.example.book.activity.ChatActivity;
 import com.example.book.activity.MessageListActivity;
 import com.example.book.databinding.FragmentProfileBinding;
 import com.example.book.manager.FirebaseManager;
+import com.example.book.manager.UserManager;
 
 public class ProfileFragment extends Fragment {
 
@@ -36,6 +37,7 @@ public class ProfileFragment extends Fragment {
         fragBinding.btnMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+    
                 Intent intent = new Intent(getActivity(), MessageListActivity.class);
                 Bundle bundle = new Bundle();
                 String message = "Hello";

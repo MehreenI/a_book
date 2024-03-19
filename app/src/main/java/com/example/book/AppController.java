@@ -65,12 +65,15 @@ public class AppController {
     //endregion Attributes
 
     //region Initialization
+    
     private AppController() {
+        Log.d("AppController", "Constructor Created: ");
+    
+        addManager(FirebaseManager.class, new FirebaseManager());
+        addManager(CoinManager.class, new CoinManager());
+        addManager(UserManager.class, new UserManager());
     }
     public void initialize() {
-        addManager(FirebaseManager.class, new FirebaseManager());
-        addManager(UserManager.class, new UserManager());
-        addManager(CoinManager.class, new CoinManager());
         getManager(UserManager.class).Initialize();
         getManager(FirebaseManager.class).Initialize();
         new Handler().postDelayed(new Runnable() {
@@ -89,6 +92,9 @@ public class AppController {
     }
     @SuppressWarnings("unchecked")
     public <T extends Manager> T getManager(Class<T> managerClass) {
+        if (managerClass == UserManager.class){
+            Log.d("getManager", " user.getUsername() check from getManager: ");
+        }
         return (T) managerMap.get(managerClass);
     }
 
@@ -265,6 +271,12 @@ public class AppController {
 
             String email = sharedPreferences.getString("email", "");
             String userPassword = sharedPreferences.getString("password", "");
+    
+            Log.d("loadLoginPrefs", "email: " + email);
+            Log.d("loadLoginPrefs", "userPassword: " + userPassword);
+            User user = new User();
+            user.setUsername(email);
+            AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(user);
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, userPassword)
                     .addOnCompleteListener(currentActivity, task -> {
                         if (task.isSuccessful()) {
@@ -272,22 +284,26 @@ public class AppController {
                             Log.d("loadLoginPrefs", "loadLoginPrefs: 3");
                             AppController.getInstance().saveLoginPrefs(email,userPassword);
                             String userId = firebaseAuth.getCurrentUser().getUid();
-                            Log.d("loadLoginPrefs", "loadLoginPrefs: 3" + userId);
+                            Log.d("loadLoginPrefs", "loadLoginPrefs: 3 " + userId);
+                            user.setUsername(userId);
+                            user.setEmail(email);
+    
+                            AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(user);
+    
                             fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                                 public void onCoinsFetched(int userCoins) {
 
                                     Log.d("loadLoginPrefs", "loadLoginPrefs: 4");
-                                    User user = new User();
-                                    user.setUsername(userId);
-                                    user.setEmail(email);
                                     user.setCoin(userCoins);
-
                                     AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(user);
+
                                     AppController.getInstance().setUser(user);
                                 }
                             });
                         } else {
                             Exception exception = task.getException();
+    
+                            Log.d("loadLoginPrefs", "exception 5: " + exception);
                         }
                     });
         }

@@ -1,5 +1,6 @@
 package com.example.book.adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,11 @@ public class ChatMessageAdapter extends FirebaseRecyclerAdapter<ChatMessage, Cha
 
     private final String username;
     private String TAG ="chat";
+    private Context context;
 
-    public ChatMessageAdapter(String username, @NonNull FirebaseRecyclerOptions<ChatMessage> options) {
+    public ChatMessageAdapter(Context context, String username, @NonNull FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
+        this.context = context;
         this.username = username;
     }
 

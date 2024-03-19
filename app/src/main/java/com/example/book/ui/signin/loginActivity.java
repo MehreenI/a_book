@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.manager.CoinFetchCallback;
 import com.example.book.ui.sinup.SignUpActivity;
@@ -71,19 +72,21 @@ public class loginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         String userId = firebaseAuth.getCurrentUser().getUid();
                         String userEmail = firebaseAuth.getCurrentUser().getEmail();
-
-
-                        // Fetch user's coins from Firebase or any other source
+    
+                        Log.d("loadLoginPrefs", "login with: " + email);
+                        Log.d("loadLoginPrefs", "login with: " + userPassword);
+    
+                        AppController.getInstance().saveLoginPrefs(email,userPassword);
+                        
                         fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                             public void onCoinsFetched(int userCoins) {
-                                // Now you have the user's coins, you can proceed
                                 Toast.makeText(loginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                                // Create an intent to navigate to the MainActivity
+                                
                                 Intent intent = new Intent(loginActivity.this, MainActivity.class);
                                 intent.putExtra("userId", userId);
                                 intent.putExtra("userEmail", userEmail);
                                 intent.putExtra("userCoins", userCoins);
+                                
 
                                 startActivity(intent);
                             }

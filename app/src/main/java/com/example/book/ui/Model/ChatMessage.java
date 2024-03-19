@@ -14,6 +14,8 @@ public class ChatMessage {
     private boolean isRead;
     //endregion Attributes
 
+    
+    
     //region Methods
     public ChatMessage() {
         this.senderId = AppController.getInstance().getManager(UserManager.class).getUser().getUsername();

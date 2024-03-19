@@ -21,10 +21,10 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 public class GoogleAdMobManager {
-
+    
     //region Attributes
     private final String TAG = "GoogleAdMobManager";
-
+    
     //region AdMobIds
     private static final boolean TESTING_MODE = true;
     private static String REWARDED_ID;
@@ -34,7 +34,7 @@ public class GoogleAdMobManager {
     private static final String ADMOB_REWARDED_ID = "here type app id provided by google admob";
     private static final String ADMOB_REWARDED_INTERSTITIAL_ID = "here type app id provided by google admob";
     //endregion AdMobIds
-
+    
     //region Singleton Pattern
     private static GoogleAdMobManager instance;
     private GoogleAdMobManager(){}
@@ -46,10 +46,10 @@ public class GoogleAdMobManager {
         return instance;
     }
     //endregion Singleton Pattern
-
+    
     private Context context;
     //endregion Attributes
-
+    
     //region Initialization
     boolean isInitialized;
     public void Initialize(Context c) {
@@ -79,7 +79,7 @@ public class GoogleAdMobManager {
         return isInitialized;
     }
     //endregion Initialization
-
+    
     //region Rewarded Ad
     private RewardedAd rewardedAd;
     boolean isLoadingRewarded;
@@ -182,7 +182,7 @@ public class GoogleAdMobManager {
         }
     }
     //endregion Rewarded Ad
-
+    
     //region Rewarded Interstitial Ad
     private RewardedInterstitialAd rewardedInterstitialAd;
     boolean isLoadingRewardedInter;

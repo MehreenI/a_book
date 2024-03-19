@@ -5,8 +5,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="coin_heading">Your Coin</string>
     <string name="coin">0</string>
-    <string name="user_icon">user Icon</string>
-    <string name="getCoin">Tap to Get More Coin</string>
+	<string name="getCoin">Tap to Get More Coin</string>
     <string name="all">All</string>
     <string name="academic">Academic</string>
     <string name="general">General</string>
@@ -18,18 +17,14 @@
     <string name="price">price</string>
     <string name="date">Date</string>
     <string name="academic_books">ACADEMIC BOOKS</string>
-    <string name="general_books">GENERAL BOOKS</string>
-    <string name="icon">Icon</string>
+	<string name="icon">Icon</string>
     <string name="logo">Logo</string>
     <string name="bookmart">BOOKMART</string>
     <string name="let_s_sign_you_in_n_you_ve_been_missed">Let\'s Sign You In\nYou\'ve been missed!</string>
     <string name="email">Email:</string>
     <string name="password">Password:</string>
-    <string name="forgot_password">forgot password</string>
-    <string name="log_in">Log In</string>
-    <string name="or">or</string>
-    <string name="sign_up_with_google">Sign up with Google</string>
-    <string name="don_t_have_an_account">Don’t have an Account?</string>
+	<string name="log_in">Log In</string>
+	<string name="don_t_have_an_account">Don’t have an Account?</string>
     <string name="create_account">Create Account</string>
     <string name="welcome_to_bookmart">WELCOME TO BOOKMART</string>
     <string name="skip">Skip for now</string>
@@ -40,18 +35,14 @@
     <string name="create_Account">Create Account</string>
     <string name="upload_image">Upload Image</string>
     <string name="select_image">Select Image</string>
-    <string name="add_more_images">Add More Images</string>
-    <string name="choose_book_condition">Choose Book Condition</string>
+	<string name="choose_book_condition">Choose Book Condition</string>
     <string name="set_price">Set Price</string>
     <string name="Add_Post">Add Post</string>
     <string name="Add_fea_Post">Add Feature Post</string>
     <string name="sell">Sell</string>
-    <string name="profile">Profile</string>
-    <string name="book">bookImage</string>
-    <string name="fav">favourite</string>
-    <string name="loc">Location</string>
-    <string name="des">Book Description</string>
-    <string name="interested">Interested</string>
+	<string name="book">bookImage</string>
+	<string name="loc">Location</string>
+	<string name="interested">Interested</string>
     <string name="offer">Offer</string>
     <string name="your_request">Your request is sent to Seller!\n</string>
     <string name="add_more_authors">Add More Authors</string>
@@ -65,15 +56,9 @@
 Get more buyers by getting you ad ranked top using a featured post
 </string>
 
-    <string name="book_detail">
-Enter Book Details
-</string>
-    <string name="pakistan_largest_book_selling_platform">Pakistan largest book \nselling PlatForm</string>
+	<string name="pakistan_largest_book_selling_platform">Pakistan largest book \nselling PlatForm</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="messages">Messages</string>
-    <string name="sendmessages">Send Message</string>
-    <string name="rewarded_ad_unit_id">1</string>
+	<string name="rewarded_ad_unit_id">1</string>
     <string name="favourite_books">Favourite Books</string>
     <string name="log_out">Log Out</string>
 </resources>

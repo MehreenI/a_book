@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.book.AppController;
 import com.example.book.activity.ChatActivity;
 import com.example.book.databinding.ItemmodelChatlistBinding;
+import com.example.book.manager.UserManager;
 import com.example.book.ui.Model.ChatRoom;
 
 import java.util.List;

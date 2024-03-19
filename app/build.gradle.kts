@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.book"
         minSdk = 22
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

@@ -19,9 +19,11 @@ public class UserManager extends Manager {
     private User user;
 
     public User getUser() {
+        Log.d("UserManager", " gettingUser user.getUsername(): " + user.getUsername());
         return user;
     }
     public void setUser(User user) {
+        Log.d("UserManager", " settingUser user.getUsername(): " + user.getUsername());
         this.user = user;
     }
     //endregion Attributes
@@ -47,6 +49,9 @@ public class UserManager extends Manager {
         editor.apply();
 
         setUser(_loggedUser);
+    
+        Log.d("UserManager", "_loggedUser.getUsername(): " + _loggedUser.getUsername());
+        Log.d("UserManager", " user.getUsername(): " + user.getUsername());
         Initialize();
         AppController.getInstance().LoadChatRooms();
     }

@@ -31,31 +31,35 @@ public class CoinManager extends Manager {
 
     public void Initialize() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d(TAG, "Initialize: currentUser: " + currentUser);
-         String userId = currentUser.getUid();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            Log.d(TAG, "Initialize: currentUser: " + currentUser);
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
 
-        userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    totalCoins = dataSnapshot.getValue(Integer.class);
-                    Log.e(TAG, "totalCoins: " + totalCoins);
-                } else {
-                    totalCoins = 5;
-                    Log.e(TAG, "totalCoins: " + totalCoins);
-                    // If the "coin" node doesn't exist in the database, you can create it here.
-//                    databaseReference.setValue(totalCoins);
+            userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        totalCoins = dataSnapshot.getValue(Integer.class);
+                        Log.e(TAG, "totalCoins: " + totalCoins);
+                    } else {
+                        totalCoins = 5;
+                        Log.e(TAG, "totalCoins: " + totalCoins);
+                        // If the "coin" node doesn't exist in the database, you can create it here.
+                        // databaseReference.setValue(totalCoins);
+                    }
+                    setInitialized(true);
                 }
-                setInitialized(true);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                setInitialized(false);
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    setInitialized(false);
+                }
+            });
+        } else {
+            Log.e(TAG, "Initialize: CurrentUser is null");
+        }
     }
 
     public void getTotalCoins(CoinFetchCallback callback) {

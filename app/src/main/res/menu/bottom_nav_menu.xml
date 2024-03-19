@@ -23,8 +23,8 @@
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_person"
-        android:title="@string/profile" />
+        android:icon="@drawable/baseline_chat_24"
+        android:title="Chat" />
 
 
 </menu>

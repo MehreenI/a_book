@@ -168,7 +168,6 @@
         app:queryHint="Search Books/Authors"/>
 
 
-
     <TextView
         android:id="@+id/popular_now"
         android:layout_width="wrap_content"
@@ -176,9 +175,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal|top"
-        android:text="Featured Books"
-        android:textSize="20sp"
+        android:text="Available Books"
         android:textColor="@color/theme"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.048"

@@ -1,6 +1,7 @@
 package com.example.book.ui.bookdetail;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -47,6 +48,12 @@ public class BookDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Book Detail"); // Set the title
+        }
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         // Get data from the intent

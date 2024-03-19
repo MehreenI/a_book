@@ -235,6 +235,7 @@ public class SellFragment extends Fragment implements AdapterView.OnItemSelected
         binding.bookNameEditText.setText("");
         binding.price.setText("");
         binding.DescriptionEditText.setText("");
+        binding.editAuthor.setText("");
     }
 
     @Override

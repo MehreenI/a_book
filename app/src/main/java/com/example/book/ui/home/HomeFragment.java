@@ -236,7 +236,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                Toast.makeText(getActivity(), "Ad failed to load: " + loadAdError.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Ads not Available right", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -45,6 +46,11 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(actBinding.getRoot());
         activity = this;
         AppController.getInstance().setCurrentActivity(activity);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Chat"); // Set the title
+        }
 
         chatRoom = AppController.getInstance().getChatRoom();
         Intent intent = getIntent();

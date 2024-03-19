@@ -1,5 +1,6 @@
 package com.example.book.ui.home;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,6 +35,11 @@ public class GeneralBook extends AppCompatActivity {
         // Use layout binding to inflate the layout
         binding = com.example.book.databinding.ActivityGeneralBookBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("General Book"); // Set the title
+        }
 
         // Initialize ViewModelProvider
         generalViewModel = new ViewModelProvider(this).get(GeneralViewModel.class);

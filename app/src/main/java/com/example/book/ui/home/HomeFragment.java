@@ -172,22 +172,32 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         allBooks = new ArrayList<>();
+                        List<Post> featuredPosts = new ArrayList<>(); // Separate list for featured posts
+
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Post post = postSnapshot.getValue(Post.class);
                             if (post != null) {
-                                allBooks.add(post);
+                                if (post.getPostType() == Enums.PostType.FEATURED) {
+                                    featuredPosts.add(post); // Add featured post to separate list
+                                } else {
+                                    allBooks.add(post); // Add regular post to main list
+                                }
                             }
                         }
 
-                        Collections.reverse(allBooks);
+                        // Sort featured posts by timestamp in descending order
+                        Collections.sort(featuredPosts, (post1, post2) -> post2.getUploadDate().compareTo(post1.getUploadDate()));
 
-                        // Initially, show all books
+                        // Add featured posts at the beginning of the allBooks list
+                        allBooks.addAll(0, featuredPosts);
+
+                        // Set the data to the adapter
                         bookAdapter.setData(allBooks);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError error) {
-                        Log.e(TAG, "Error fetching featured posts: " + error.getMessage());
+                        Log.e(TAG, "Error fetching posts: " + error.getMessage());
                     }
                 });
     }

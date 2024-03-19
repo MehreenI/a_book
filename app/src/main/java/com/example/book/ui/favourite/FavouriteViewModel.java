@@ -17,13 +17,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FavouriteViewModel extends ViewModel {
 
     private MutableLiveData<List<Post>> posts;
     private List<Post> bookList = new ArrayList<>();
     private FirebaseAuth auth;
+
+    // Set to store book IDs already added to favorites
+    private Set<String> addedBookIds = new HashSet<>();
 
     public FavouriteViewModel() {
         posts = new MutableLiveData<>();
@@ -45,11 +50,16 @@ public class FavouriteViewModel extends ViewModel {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         bookList.clear();
+                        addedBookIds.clear(); // Clear existing added book IDs
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Post book = snapshot.getValue(Post.class);
                             if (book != null) {
-                                bookList.add(book);
+                                // Check if the book ID is not already added
+                                if (!addedBookIds.contains(book.getPostId())) {
+                                    bookList.add(book);
+                                    addedBookIds.add(book.getPostId());
+                                }
                             }
                         }
 
@@ -64,4 +74,3 @@ public class FavouriteViewModel extends ViewModel {
                 });
     }
 }
-

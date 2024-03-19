@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,22 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatActivity extends AppCompatActivity {
 
-    //region Attributes
-    //region Class Constant
     private ActivityChatBinding actBinding;
     private Activity activity;
     private final String TAG = "ChatActivity";
-    //endregion Class Constant
     private ChatMessageAdapter chatMessageAdapter;
     private String chatRoomId;
-    ChatRoom chatRoom;
+    private ChatRoom chatRoom;
+    private DatabaseReference DBChatRoomPath;
 
-    public DatabaseReference DBChatRoomPath = FirebaseDatabase.getInstance().getReference("chatroom");
-
-    //endregion Attributes
-
-    //region Methods
-    //region Initialization
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,46 +47,64 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             chatRoomId = intent.getStringExtra("ChatRoomId");
-            if(chatRoomId == null){
+            if (chatRoomId == null) {
                 chatRoomId = chatRoom.getChatroomId();
             }
         }
         Log.d("ChatActivity", "onCreate: chatRoomId " + chatRoomId);
-        FirebaseRecyclerOptions<ChatMessage> options =
-                new FirebaseRecyclerOptions.Builder<ChatMessage>()
-                        .setQuery( DBChatRoomPath.child(chatRoomId).child("messages"), ChatMessage.class)
-                        .build();
 
-        chatMessageAdapter = new ChatMessageAdapter(this, AppController.getInstance().getManager(UserManager.class).getUser().getUsername(),options);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        actBinding.recChat.setLayoutManager(linearLayoutManager);
-        actBinding.recChat.setAdapter(chatMessageAdapter);
+        // Initialize Firebase database reference
+        DBChatRoomPath = FirebaseDatabase.getInstance().getReference("chatroom");
 
-        actBinding.btnSend.setOnClickListener(v -> {
-            ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setMessage(actBinding.txtMessage.getText().toString());
-            Log.d("ChatActivity", "onCreate: chatMessage " + chatMessage);
-            AppController.getInstance().getManager(FirebaseManager.class).sendChatMessage(chatRoom, chatMessage);
-            actBinding.txtMessage.setText("");
-            chatMessageAdapter.notifyDataSetChanged();
-            linearLayoutManager.scrollToPosition(chatMessageAdapter.getItemCount());
-        });
+        // Get the current user's username
+        UserManager userManager = AppController.getInstance().getManager(UserManager.class);
+        if (userManager != null && userManager.getUser() != null) {
+            String username = userManager.getUser().getUsername();
+
+            // Build FirebaseRecyclerOptions
+            FirebaseRecyclerOptions<ChatMessage> options =
+                    new FirebaseRecyclerOptions.Builder<ChatMessage>()
+                            .setQuery(DBChatRoomPath.child(chatRoomId).child("messages"), ChatMessage.class)
+                            .build();
+
+            // Create the adapter
+            chatMessageAdapter = new ChatMessageAdapter(username, options);
+
+            // Set up RecyclerView
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            actBinding.recChat.setLayoutManager(linearLayoutManager);
+            actBinding.recChat.setAdapter(chatMessageAdapter);
+
+            // Send button click listener
+            actBinding.btnSend.setOnClickListener(v -> {
+                ChatMessage chatMessage = new ChatMessage();
+                chatMessage.setMessage(actBinding.txtMessage.getText().toString());
+                Log.d("ChatActivity", "onCreate: chatMessage " + chatMessage);
+                AppController.getInstance().getManager(FirebaseManager.class).sendChatMessage(chatRoom, chatMessage);
+                actBinding.txtMessage.setText("");
+                chatMessageAdapter.notifyDataSetChanged();
+                linearLayoutManager.scrollToPosition(chatMessageAdapter.getItemCount());
+            });
+        } else {
+            // Handle case where UserManager or User is null
+            Log.e(TAG, "UserManager or User is null");
+            // You might want to display an error message or handle this case accordingly
+        }
     }
-    //endregion Initialization
-    //endregion Methods
 
-    //region Extras
     @Override
     protected void onStart() {
         super.onStart();
-        chatMessageAdapter.startListening();
+        if (chatMessageAdapter != null) {
+            chatMessageAdapter.startListening();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        chatMessageAdapter.stopListening();
+        if (chatMessageAdapter != null) {
+            chatMessageAdapter.stopListening();
+        }
     }
-    //endregion Extras
-
 }

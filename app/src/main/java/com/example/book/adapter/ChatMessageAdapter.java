@@ -1,7 +1,5 @@
 package com.example.book.adapter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,54 +14,46 @@ import com.example.book.ui.Model.ChatMessage;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-
 public class ChatMessageAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMessageAdapter.CustomViewHolder> {
 
-    public Context context;
-    String username;
+    private final String username;
+    private String TAG ="chat";
 
-    public ChatMessageAdapter(Context context, String username, @NonNull FirebaseRecyclerOptions<ChatMessage> options) {
+    public ChatMessageAdapter(String username, @NonNull FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
-        this.context = context;
         this.username = username;
     }
+
     @Override
     protected void onBindViewHolder(@NonNull CustomViewHolder holder, int position, @NonNull ChatMessage model) {
-        RedrawView(holder,position,model);
-    }
-    @NonNull
-    @Override
-    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CustomViewHolder(ItemmodelChatmessageBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
-    }
-    @Override
-    public int getItemCount() {
-        return super.getItemCount();
-    }
-
-    public void RedrawView(@NonNull CustomViewHolder holder, int position, @NonNull ChatMessage model){
-
-        Log.d("sendChatMessage", "RedrawView: getSenderId " + model.getSenderId());
-        Log.d("sendChatMessage", "RedrawView: username " + username);
-        if(model.getSenderId().equals(username))
+        if (model.getSenderId().equals(username))
         {
-            Log.d("sendChatMessage", "RedrawView: your message");
-            showYourMessage(holder, position, model);
-        }else
-        {
-            Log.d("sendChatMessage", "RedrawView: other message");
-            showOtherMessage(holder, position, model);
+            Log.d(TAG, "onBindViewHolder:  "+username);
+            showYourMessage(holder, model);
+        } else {
+            Log.d(TAG, "onBindViewHolder:  "+username);
+
+            showOtherMessage(holder, model);
         }
     }
 
-    public void showYourMessage(@NonNull CustomViewHolder holder, int position, @NonNull ChatMessage model){
+    @NonNull
+    @Override
+    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        ItemmodelChatmessageBinding binding = ItemmodelChatmessageBinding.inflate(layoutInflater, parent, false);
+        return new CustomViewHolder(binding);
+    }
+
+    private void showYourMessage(@NonNull CustomViewHolder holder, @NonNull ChatMessage model) {
         holder.binding.sideMessageOther.setVisibility(View.GONE);
         holder.binding.sideMessageYou.setVisibility(View.VISIBLE);
 
         holder.binding.txtMessage.setText(model.getMessage());
         holder.binding.txtTime.setText(AppController.getRelativeTime(model.getTimestamp()));
 
-        if(model.isRead()) {
+        // Set visibility of message status indicators
+        if (model.isRead()) {
             holder.binding.imgSeen.setVisibility(View.VISIBLE);
             holder.binding.imgDelivered.setVisibility(View.GONE);
             holder.binding.imgSent.setVisibility(View.GONE);
@@ -71,7 +61,7 @@ public class ChatMessageAdapter extends FirebaseRecyclerAdapter<ChatMessage, Cha
             holder.binding.imgSeen.setVisibility(View.GONE);
             holder.binding.imgDelivered.setVisibility(View.VISIBLE);
             holder.binding.imgSent.setVisibility(View.GONE);
-        } else if (model.isSent()){
+        } else if (model.isSent()) {
             holder.binding.imgSeen.setVisibility(View.GONE);
             holder.binding.imgDelivered.setVisibility(View.GONE);
             holder.binding.imgSent.setVisibility(View.VISIBLE);
@@ -82,7 +72,7 @@ public class ChatMessageAdapter extends FirebaseRecyclerAdapter<ChatMessage, Cha
         }
     }
 
-    public void showOtherMessage(@NonNull CustomViewHolder holder, int position, @NonNull ChatMessage model){
+    private void showOtherMessage(@NonNull CustomViewHolder holder, @NonNull ChatMessage model) {
         holder.binding.sideMessageOther.setVisibility(View.VISIBLE);
         holder.binding.sideMessageYou.setVisibility(View.GONE);
 
@@ -90,8 +80,9 @@ public class ChatMessageAdapter extends FirebaseRecyclerAdapter<ChatMessage, Cha
         holder.binding.txtTimeO.setText(AppController.getRelativeTime(model.getTimestamp()));
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
-        private ItemmodelChatmessageBinding binding;
+    public static class CustomViewHolder extends RecyclerView.ViewHolder {
+        private final ItemmodelChatmessageBinding binding;
+
         public CustomViewHolder(ItemmodelChatmessageBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

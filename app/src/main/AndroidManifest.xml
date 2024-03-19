@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Book"
         tools:targetApi="31">
         <activity
+            android:name=".ui.myPost.MyPost"
+            android:exported="false" />
+        <activity
             android:name=".ui.awards.DailyRewards"
             android:exported="false" />
         <activity

@@ -15,6 +15,7 @@ import com.example.book.MainActivity;
 import com.example.book.databinding.FragmentDashboardBinding;
 import com.example.book.ui.awards.DailyRewards;
 import com.example.book.ui.favourite.Favourite;
+import com.example.book.ui.myPost.MyPost;
 import com.example.book.ui.signin.loginActivity;
 import com.example.book.ui.sinup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,7 +68,18 @@ public class DashboardFragment extends Fragment {
                 logout();
             }
         });
+        binding.myBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(MyPost.class);
+            }
+        });
         return root;
+    }
+
+    private void changeActivity(Class myPostClass) {
+        Intent intent = new Intent(getActivity(),myPostClass);
+        startActivity(intent);
     }
 
     private void logout() {

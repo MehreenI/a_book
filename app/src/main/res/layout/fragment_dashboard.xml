@@ -68,4 +68,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
+    <Button
+        android:id="@+id/my_Books"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Books"
+        app:layout_constraintBottom_toTopOf="@+id/daily_rewards"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn"
+        app:layout_constraintVertical_bias="0.5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

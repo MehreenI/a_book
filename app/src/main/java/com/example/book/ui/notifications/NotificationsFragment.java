@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.book.AppController;
 import com.example.book.R;
 import com.example.book.ui.Adapter.NotificationAdapter;
 import com.example.book.ui.Model.Bid;
@@ -21,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +33,11 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         recyclerView = root.findViewById(R.id.recycler_view);
+
+        // Initialize the adapter here
         notificationAdapter = new NotificationAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
         recyclerView.setAdapter(notificationAdapter);
 
         // Load and set your notification data from Firebase
@@ -70,7 +69,10 @@ public class NotificationsFragment extends Fragment {
                     }
                     // Reverse the list to show the latest bids at the top
                     Collections.reverse(notificationList);
-                    notificationAdapter.setNotificationList(notificationList);
+                    // Make sure notificationAdapter is not null before calling its method
+                    if (notificationAdapter != null) {
+                        notificationAdapter.setNotificationList(notificationList);
+                    }
                 }
 
                 @Override
@@ -78,12 +80,13 @@ public class NotificationsFragment extends Fragment {
                     // Handle error
                 }
             });
-        }
-
- else {
+        } else {
             // User is not logged in, or there are no notifications
             List<Bid> emptyList = Collections.emptyList();
-            notificationAdapter.setNotificationList(emptyList);
+            // Make sure notificationAdapter is not null before calling its method
+            if (notificationAdapter != null) {
+                notificationAdapter.setNotificationList(emptyList);
+            }
         }
     }
 }

@@ -40,12 +40,15 @@ public class MessageListActivity extends AppCompatActivity {
         activity = this;
         AppController.getInstance().setCurrentActivity(activity);
 
-        username = AppController.getInstance().getUser().getUsername();
+//        username = AppController.getInstance().getUser().getUsername();
+        username = AppController.getInstance().getManager(UserManager.class).getUser().getUid();
 
         List<ChatRoom> chatRooms = new ArrayList<>();
         chatRooms.addAll(AppController.getInstance().getChatRooms());
         Log.d(TAG, "username: " + username);
-        Log.d(TAG, "chatRooms: " + chatRooms);
+        for (ChatRoom chatroom: chatRooms) {
+            Log.d(TAG, "chatroom: " + chatroom.getChatroomId());
+        }
     
         messageListAdapter = new MessageListAdapter(this, username, chatRooms);
         actBinding.recChat.setLayoutManager(new LinearLayoutManager(this));

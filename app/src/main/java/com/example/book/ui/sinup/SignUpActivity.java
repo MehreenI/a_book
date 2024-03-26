@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.R;
+import com.example.book.manager.FirebaseManager;
 import com.example.book.ui.Model.User;
 import com.example.book.ui.home.HomeFragment;
 import com.example.book.ui.signin.loginActivity;
@@ -79,9 +81,19 @@ public class SignUpActivity extends AppCompatActivity {
                         String userId = firebaseAuth.getCurrentUser().getUid();
                         String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
-                        User user = new User(username, email, phonenumber);
-                        databaseReference.child(userId).setValue(user);
+                        User user = new User();
+                        user.setUid(userId);
+                        user.setUsername(username);
+                        user.setEmail(userEmail);
+                        user.setPassword(password);
+                        user.setPhoneNumber(phonenumber);
+                        
+                        AppController.getInstance().saveLoginPrefs(email,password);
 
+//                        retryIntegration
+                        AppController.getInstance().getManager(FirebaseManager.class).addNewUser(getApplicationContext(), user);
+//                        databaseReference.child(userId).setValue(user);
+                        
                         Toast.makeText(this, "Sign-up Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
@@ -90,7 +102,8 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(this, "Error creating user: " + (exception != null ? exception.getMessage() : ""), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }}
+    }
+}
 
 
 

@@ -67,7 +67,8 @@ public class CoinManager extends Manager {
         if (currentUser != null) {
             String userId = currentUser.getUid();
 
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(userId);
+            Log.d("BookDetailActivity", "okButton clicked " + userRef);
 
             userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

@@ -57,6 +57,7 @@ public class AppController {
     //endregion Singleton
 
     //region Attributes
+    private final String TAG = "AppController";
     private ChatRoom chatRoom;
     private User user;
     private List<String> chatroomIds = new ArrayList<>();
@@ -79,7 +80,7 @@ public class AppController {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("loadLoginPrefs", "Starting LoadChatRooms: ");
+                Log.d("AppController", "Starting LoadChatRooms: ");
                 AppController.getInstance().LoadChatRooms();
             }
         }, 3000);
@@ -293,7 +294,7 @@ public class AppController {
                             fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                                 public void onCoinsFetched(int userCoins) {
 
-                                    Log.d("loadLoginPrefs", "loadLoginPrefs: 4");
+                                    Log.d("loadLoginPrefs", "loadLoginPrefs: 4 coins: " + userCoins);
                                     user.setCoin(userCoins);
                                     AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(user);
 
@@ -310,9 +311,9 @@ public class AppController {
         return userLoggedIn;
     }
     private void fetchUserCoinsFromFirebase(String userId, CoinFetchCallback callback) {
-        final int[] userCoins = {0}; // Default value
+        final int[] userCoins = {0};
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(userId);
 
         userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

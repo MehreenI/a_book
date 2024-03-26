@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.book.GoogleAdMobManager;
 import com.example.book.MainActivity;
 import com.example.book.R;
 import com.example.book.databinding.FragmentHomeBinding;
@@ -46,8 +47,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private Activity activity;
     private final String TAG = "HomeFragment";
-
-    private RewardedAd rewardedAd;
 
     private BookAdapter bookAdapter;
     private List<Post> allBooks;
@@ -105,17 +104,15 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        MobileAds.initialize(getActivity());
-
-        loadRewardedAd();
 
         // Show the rewarded ad when a button is clicked, for example
         binding.getCoin.setOnClickListener(v ->{
-            if (rewardedAd != null) {
-                showRewardedAd();
-            } else {
-                Toast.makeText(getActivity(), "Ad not loaded yet. Try again.", Toast.LENGTH_SHORT).show();
-            }
+            GoogleAdMobManager.getInstance().ShowRewardedAd(getActivity(), new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "Rewarded Ad Completed Successfully: ");
+                }
+            });
         });
 
         binding.getreward.setOnClickListener(new View.OnClickListener() {
@@ -233,34 +230,7 @@ public class HomeFragment extends Fragment {
 
         return bookName.contains(query.toLowerCase()) || authors.contains(query.toLowerCase());
     }
-
-    private void loadRewardedAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        RewardedAd.load(getActivity(), getString(R.string.rewarded_ad_unit_id), adRequest, new RewardedAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull RewardedAd ad) {
-                rewardedAd = ad;
-                Toast.makeText(getActivity(), "Ad loaded successfully", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-//                Toast.makeText(getActivity(), "Ads not Available right", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showRewardedAd() {
-        if (rewardedAd != null) {
-            rewardedAd.show(getActivity(), rewardItem -> {
-                int rewardAmount = rewardItem.getAmount();
-                String rewardType = rewardItem.getType();
-                Toast.makeText(getActivity(), "Earned " + rewardAmount + " " + rewardType, Toast.LENGTH_SHORT).show();
-                loadRewardedAd(); // Load a new rewarded ad after showing
-            });
-        }
-    }
+    
 
     private void fetchUserCoinsAndDisplay() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -271,7 +241,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateCoinTextView(String userId) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user").child(userId);
 
         userRef.child("coin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

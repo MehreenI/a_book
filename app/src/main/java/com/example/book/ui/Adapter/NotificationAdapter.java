@@ -3,6 +3,7 @@ package com.example.book.ui.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     }else{
                         postId = notification.getPostId();
                     }
+                    Log.d("ChatWork", "notification get bidder: ");
                     AppController.getInstance().getManager(FirebaseManager.class).isChatRoomCreated(postId, notification.getBidderId());
                 }
             });

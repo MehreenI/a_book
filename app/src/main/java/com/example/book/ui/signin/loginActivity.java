@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.manager.CoinFetchCallback;
+import com.example.book.manager.FirebaseManager;
+import com.example.book.ui.Model.User;
 import com.example.book.ui.sinup.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -77,7 +79,15 @@ public class loginActivity extends AppCompatActivity {
                         Log.d("loadLoginPrefs", "login with: " + userPassword);
     
                         AppController.getInstance().saveLoginPrefs(email,userPassword);
-                        
+    
+                        User user = new User();
+                        user.setUid(userId);
+                        user.setEmail(userEmail);
+                        user.setPassword(password.getText().toString());
+
+//                        retryIntegration
+                        AppController.getInstance().getManager(FirebaseManager.class).loginUser(this, user);
+    
                         fetchUserCoinsFromFirebase(userId, new CoinFetchCallback() {
                             public void onCoinsFetched(int userCoins) {
                                 Toast.makeText(loginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -86,7 +96,6 @@ public class loginActivity extends AppCompatActivity {
                                 intent.putExtra("userId", userId);
                                 intent.putExtra("userEmail", userEmail);
                                 intent.putExtra("userCoins", userCoins);
-                                
 
                                 startActivity(intent);
                             }

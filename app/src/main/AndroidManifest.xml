@@ -28,9 +28,6 @@
             android:name=".ui.favourite.Favourite"
             android:exported="false" />
         <activity
-            android:name=".ui.favourite.MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -45,11 +42,15 @@
         <activity
             android:name=".ui.bookdetail.BookDetailActivity"
             android:exported="false" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
-
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+            android:value="true"/>
         <activity
             android:name=".ui.dialogueBox.dialogue_confirm_feature"
             android:exported="false" />

@@ -20,7 +20,7 @@
 
 
     <TextView
-        android:id="@+id/bookmart"
+        android:id="@+id/txtUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookmart"
+        app:layout_constraintTop_toBottomOf="@+id/txtUserName"
         app:layout_constraintVertical_bias="1.0" />
 
 

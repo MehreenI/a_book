@@ -162,7 +162,7 @@ public class GoogleAdMobManager {
         });
     }
     public void ShowRewardedAd(Activity c, Runnable successCallback) {
-        Log.d(c.toString().toUpperCase(), "ShowRewardedAd");
+        Log.d(TAG, "ShowRewardedAd");
         if (IsRewardedAdAvailable())
         {
             Activity activityContext = c;

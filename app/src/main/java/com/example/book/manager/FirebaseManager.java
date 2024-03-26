@@ -92,6 +92,8 @@ public class FirebaseManager extends Manager {
 
         List<String> userIds = new ArrayList<>();
         userIds.add(AppController.getInstance().getManager(UserManager.class).getUser().getUsername());
+    
+        Log.d("ChatWork", "notification get user: " + AppController.getInstance().getManager(UserManager.class).getUser().getUsername());
         userIds.add(bidderId);
         chatRoom.setUserIds(userIds);
 
@@ -101,6 +103,7 @@ public class FirebaseManager extends Manager {
         chatRoom.setPostId(postId);
 
         String username = AppController.getInstance().getManager(UserManager.class).getUser().getUsername();
+        Log.d("ChatWork", "notification get username: " + username);
 
         DBChatRoomPath.child(chatRoomId).setValue(chatRoom).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -139,6 +142,8 @@ public class FirebaseManager extends Manager {
     }
     public void isChatRoomCreated(String postId, String bidderId) {
         DatabaseReference chatRoomsRef = DBChatRoomPath;
+        Log.d("isChatRoomCreated", "bidderId: " + bidderId);
+        Log.d("isChatRoomCreated", "postId: " + postId);
 
         Query query = chatRoomsRef.orderByChild("postId").equalTo(postId);
 
@@ -250,7 +255,7 @@ public class FirebaseManager extends Manager {
                 });
     }
     public void addNewUser(Context context, @NonNull User newUser){
-        DBUserPath.child(newUser.getUsername()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DBUserPath.child(newUser.getUid()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -262,7 +267,7 @@ public class FirebaseManager extends Manager {
     }
     public void loginUser(Context context, @NonNull User loggedUser){
         AppController.getInstance().getManager(UserManager.class).setUserLoggedIn(loggedUser);
-        context.startActivity(new Intent(context, MainActivity.class));
+//        context.startActivity(new Intent(context, MainActivity.class));
     }
 //    public boolean verifySignupCredential(Context context, @NonNull String userId) {
 //        Task<Boolean> doesUserExistTask = doesUserExist(userId);

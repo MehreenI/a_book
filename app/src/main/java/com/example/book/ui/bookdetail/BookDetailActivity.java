@@ -117,11 +117,9 @@ public class BookDetailActivity extends AppCompatActivity {
         dialogue.setContentView(R.layout.activity_dialogue_offer);
 
         Button offerButton = dialogue.findViewById(R.id.bid_offer);
-
-        // Move the EditText initialization inside the method
+        
         EditText bidAmountEditText = dialogue.findViewById(R.id.editTextNumber);
-
-        // Calculate 50% of the original book price
+        
         double fiftyPercentOfBookPrice = Double.parseDouble(bookPrice) * 0.5;
 
         offerButton.setOnClickListener(new View.OnClickListener() {
@@ -183,20 +181,23 @@ public class BookDetailActivity extends AppCompatActivity {
 
         // Find the "OK" button in the dialog layout
         Button okButton = dialogue.findViewById(R.id.ok);
-
+    
+        Log.d("BookDetailActivity", "showInterestedDialogueBox");
 
         // Set click listener on the "OK" button
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CoinManager coinManager = AppController.getInstance().getManager(CoinManager.class);
+                Log.d("BookDetailActivity", "okButton clicked " + coinManager);
                 coinManager.getTotalCoins(new CoinFetchCallback() {
                     @Override
                     public void onCoinsFetched(int totalCoins) {
+                        Log.d("BookDetailActivity", "totalCoins: " + totalCoins);
                         if (totalCoins >= 5) {
                             // Deduct coins in Firebase
                             deductCoinsFromFirebase(5);
-
+    
                             // Create and send bid request
                             sendBidRequest(Integer.parseInt(bookPrice), sellerId); // Pass sellerId to the method
 
@@ -248,7 +249,7 @@ public class BookDetailActivity extends AppCompatActivity {
         bidsRef.child(bidId).setValue(bid);
 
         // Notify the seller about the bid with additional details
-        DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("users").child(sellerId).child("bids_Notification").child(bidId);
+        DatabaseReference sellerBidsRef = FirebaseDatabase.getInstance().getReference("user").child(sellerId).child("bids_Notification").child(bidId);
         sellerBidsRef.child("bidderId").setValue(bidderId);
         sellerBidsRef.child("orignalPrice").setValue(bookPrice);
         sellerBidsRef.child("bookName").setValue(bookName);
@@ -270,10 +271,11 @@ public class BookDetailActivity extends AppCompatActivity {
     private void deductCoinsFromFirebase(int coinsToDeduct) {
         // Get the user's ID from Firebase Auth
         String userId = firebaseAuth.getCurrentUser().getUid();
-
+    
         // Reference to the user's coin data in Firebase
-        DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("coin");
-
+        DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("user").child(userId).child("coin");
+    
+        Log.d("BookDetailActivity", "deductCoinsFromFirebase: " + userCoinsRef);
         userCoinsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

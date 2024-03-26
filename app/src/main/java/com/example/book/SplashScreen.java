@@ -50,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: 1 " + activity);
+                    Log.d(TAG, "Logged in ");
 
                     AppController.getInstance().initialize();
                     Intent intent = new Intent(SplashScreen.this, MainActivity.class);
@@ -62,7 +62,7 @@ public class SplashScreen extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: 2 " + activity);
+                    Log.d(TAG, "Not Logged in ");
                     Intent intent = new Intent(SplashScreen.this, loginActivity.class);
                     startActivity(intent);
                     finish();

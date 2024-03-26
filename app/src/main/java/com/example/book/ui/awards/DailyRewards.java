@@ -40,7 +40,7 @@ public class DailyRewards extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("user");
 
         // Check if a user is logged in
         if (mAuth.getCurrentUser() != null) {

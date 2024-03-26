@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.book.AppController;
 import com.example.book.MainActivity;
 import com.example.book.databinding.FragmentDashboardBinding;
 import com.example.book.ui.awards.DailyRewards;
@@ -31,7 +32,9 @@ public class DashboardFragment extends Fragment {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        
+//        binding.txtUserName.setText(AppController.getInstance().getUser().getUsername().toString());
+        
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

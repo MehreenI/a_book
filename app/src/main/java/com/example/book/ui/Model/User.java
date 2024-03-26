@@ -8,6 +8,7 @@ import java.util.List;
 
 public class User implements Serializable {
 
+    private String uid;
     private String username;
     private String password;
     private String email;
@@ -20,13 +21,14 @@ public class User implements Serializable {
     private List<String> favPostId;
 
     public User() {
+        this.uid = "";
         this.username = "";
         this.password = "";
         this.email = "";
-        this.coin = 10;
-        this.City = "";
-        this.Town = "";
-        this.profileImg = "";
+        this.coin = 50;
+//        this.City = "";
+//        this.Town = "";
+//        this.profileImg = "";
         this.phoneNumber = "";
         this.chatroomId = new ArrayList<>();
         this.favPostId = new ArrayList<>();
@@ -72,6 +74,15 @@ public class User implements Serializable {
 
 
     // region Getter/Setter
+    
+    public String getUid() {
+        return uid;
+    }
+    
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+    
     public String getUsername() {
         return username;
     }

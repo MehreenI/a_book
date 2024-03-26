@@ -51,7 +51,7 @@ public class NotificationsFragment extends Fragment {
         if (firebaseAuth.getCurrentUser() != null) {
             String currentUserId = firebaseAuth.getCurrentUser().getUid();
             DatabaseReference bidsRef = FirebaseDatabase.getInstance()
-                    .getReference("users")
+                    .getReference("user")
                     .child(currentUserId)
                     .child("bids_Notification");
 

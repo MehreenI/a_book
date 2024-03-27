@@ -26,9 +26,6 @@ public class User implements Serializable {
         this.password = "";
         this.email = "";
         this.coin = 50;
-//        this.City = "";
-//        this.Town = "";
-//        this.profileImg = "";
         this.phoneNumber = "";
         this.chatroomId = new ArrayList<>();
         this.favPostId = new ArrayList<>();
@@ -51,8 +48,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.favPostId = favPostId;
     }
-
-
+    
     // region Method
     public boolean validateUsername(String string) {
         return Preconditions.checkNotEmpty(string) &&

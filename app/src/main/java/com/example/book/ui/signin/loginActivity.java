@@ -81,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
                         AppController.getInstance().saveLoginPrefs(email,userPassword);
     
                         User user = new User();
-                        user.setUid(userId);
+                        user.setUsername(userId);
                         user.setEmail(userEmail);
                         user.setPassword(password.getText().toString());
 

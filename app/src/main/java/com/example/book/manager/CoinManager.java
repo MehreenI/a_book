@@ -109,7 +109,7 @@ public class CoinManager extends Manager {
         // Check if firebaseAuth is not null before using it
         if (firebaseAuth != null && firebaseAuth.getCurrentUser() != null) {
             String userId = firebaseAuth.getCurrentUser().getUid();
-            DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("coin");
+            DatabaseReference userCoinsRef = FirebaseDatabase.getInstance().getReference("user").child(userId).child("coin");
 
             userCoinsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

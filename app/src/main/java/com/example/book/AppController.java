@@ -93,9 +93,6 @@ public class AppController {
     }
     @SuppressWarnings("unchecked")
     public <T extends Manager> T getManager(Class<T> managerClass) {
-        if (managerClass == UserManager.class){
-            Log.d("getManager", " user.getUsername() check from getManager: ");
-        }
         return (T) managerMap.get(managerClass);
     }
 

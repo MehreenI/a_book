@@ -118,16 +118,27 @@ public class FirebaseManager extends Manager {
                                     chatroomIds.add(chatRoomSnapshot.getValue().toString());
                                 }
                                 chatroomIds.add(chatRoomId);
+                                AppController.getInstance().LoadChatRooms();
                                 DBUserPath.child(username).child("chatroomId").setValue(chatroomIds).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            DBUserPath.child(bidderId).child("chatroomId").setValue(chatroomIds).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            DBUserPath.child(bidderId).child("chatroomId").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                 @Override
-                                                public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()){
-                                                        openExistingChatRoom(chatRoom);
+                                                public void onComplete(@androidx.annotation.NonNull Task<DataSnapshot> task) {
+                                                    List<String> chatroomIds = new ArrayList<>();
+                                                    for (DataSnapshot chatRoomSnapshot : task.getResult().getChildren()) {
+                                                        chatroomIds.add(chatRoomSnapshot.getValue().toString());
                                                     }
+                                                    chatroomIds.add(chatRoomId);
+                                                    DBUserPath.child(bidderId).child("chatroomId").setValue(chatroomIds).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@androidx.annotation.NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()){
+                                                                openExistingChatRoom(chatRoom);
+                                                            }
+                                                        }
+                                                    });
                                                 }
                                             });
                                         }

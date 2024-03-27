@@ -41,7 +41,7 @@ public class MessageListActivity extends AppCompatActivity {
         AppController.getInstance().setCurrentActivity(activity);
 
 //        username = AppController.getInstance().getUser().getUsername();
-        username = AppController.getInstance().getManager(UserManager.class).getUser().getUid();
+        username = AppController.getInstance().getManager(UserManager.class).getUser().getUsername();
 
         List<ChatRoom> chatRooms = new ArrayList<>();
         chatRooms.addAll(AppController.getInstance().getChatRooms());

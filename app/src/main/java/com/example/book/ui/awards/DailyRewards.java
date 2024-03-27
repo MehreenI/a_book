@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.book.AppController;
 import com.example.book.R;
+import com.example.book.manager.UserManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,7 +21,7 @@ import java.util.Calendar;
 
 public class DailyRewards extends AppCompatActivity {
 
-    private static final String PREF_NAME = "DailyRewardPrefs";
+    private static final String PREF_NAME = "DailyRewardPref";
     private static final String KEY_REWARD_CLAIMED = "rewardClaimed";
     private static final String KEY_LAST_CLAIMED_DAY = "lastClaimedDay";
     private static final String KEY_LAST_CLAIM_TIME = "lastClaimTime";
@@ -27,6 +30,7 @@ public class DailyRewards extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,11 @@ public class DailyRewards extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
-
+        userID = AppController.getInstance().getManager(UserManager.class).getUser().getUsername();
+        Log.d(this.getLocalClassName(), "claimedReward: 1 userID: " + userID);
+    
         // Check if a user is logged in
-        if (mAuth.getCurrentUser() != null) {
+        if (userID != null) {
             // If logged in, proceed with initializing the rewards UI
             initializeRewardsUI();
         } else {
@@ -83,6 +89,8 @@ public class DailyRewards extends AppCompatActivity {
     }
 
     public void onClaimButtonClick(View view) {
+        Log.d(this.getLocalClassName(), "claimedReward: 2 userID: " + userID);
+    
         if (isRewardClaimedToday()) {
             showToast("You have already claimed your reward today");
         } else {
@@ -104,11 +112,9 @@ public class DailyRewards extends AppCompatActivity {
     }
 
     private void claimedReward() {
-        // Get the current user ID
-        String userId = mAuth.getCurrentUser().getUid();
-
-        // Get a reference to the user's rewards node
-        DatabaseReference userRef = databaseReference.child(userId).child("coin");
+    
+        Log.d(this.getLocalClassName(), "claimedReward: userID: " + userID);
+        DatabaseReference userRef = databaseReference.child(userID).child("coin");
 
         // Read the current value from the database
         userRef.get().addOnCompleteListener(task -> {
